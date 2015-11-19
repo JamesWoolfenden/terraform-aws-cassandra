@@ -25,7 +25,7 @@ resource "aws_instance" "dev-jump" {
                 "sudo apt-get -y install git",
 				"sudo apt-get update",
 				"sudo apt-get install -y ansible",
-				"git clone https://github.com/joeljacobson/dse-deployer.git"
+				"git clone https://github.com/JamesWoolfenden/dse-deployer.git"
 				]
 	  connection {
           user = "ubuntu" 
