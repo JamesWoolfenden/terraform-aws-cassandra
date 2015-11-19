@@ -1,0 +1,19 @@
+#Create local git repo
+
+#shows what it would do
+terraform plan
+
+#does it
+terraform apply
+
+#does what
+terraform show
+
+#terraform destroy
+terraform destroy
+
+#Connect up to atlas
+terraform remote config -backend-config="name=JamesWoolfenden/cassandra"
+
+#i think this but is obvious
+terraform push -name="JamesWoolfenden/cassandra"
