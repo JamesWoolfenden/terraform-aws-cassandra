@@ -6,7 +6,7 @@ This script requires thats you pass in a value for your ssh key. In addition to 
 ToDo
 ====
 1. The Ansible host needs an ssh key to connect to the new vm host and ssh config.
-2. Make the output of Terracorm create the property files for Ansible.
+2. Make the output of Terraform create the property files for Ansible.
 3. Modify Ansible hosts ip list. 
 4. Execute the Ansible playbook, include a delay for each node in the cluster.
 5. A test to check that the cluster and all nodes are up.
