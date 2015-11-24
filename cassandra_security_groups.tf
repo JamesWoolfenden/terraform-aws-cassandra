@@ -34,8 +34,7 @@ resource "aws_security_group" "cassandrauseast" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-
-  // allows traffic from the SG itself for tcp
+ // allows traffic from the SG itself for tcp
   ingress {
       from_port = 0
       to_port = 65535
