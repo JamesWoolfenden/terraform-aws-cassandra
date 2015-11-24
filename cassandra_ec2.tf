@@ -1,9 +1,9 @@
 resource "aws_instance" "aevi-tf-cassandra-node0" {
     count = "3"
-    availability_zone="eu-west-1c"
-    key_name = "${aws_key_pair.cassandra.key_name}"
-    ami = "${lookup(var.aws_amis, var.region)}"
-    instance_type = "${var.instance_type}"
+    availability_zone= "${var.region}a"
+    key_name         = "${aws_key_pair.cassandra.key_name}"
+    ami              = "${lookup(var.aws_amis, var.region)}"
+    instance_type    = "${var.instance_type}"
 
     root_block_device {
       volume_type = "standard"
@@ -18,10 +18,10 @@ resource "aws_instance" "aevi-tf-cassandra-node0" {
 }
 
 resource "aws_instance" "dev-jump" {
-    availability_zone="eu-west-1c"
-    key_name = "${aws_key_pair.cassandra.key_name}"
-    ami = "${lookup(var.aws_amis, var.region)}"
-    instance_type = "${var.instance_type}"
+    availability_zone="${var.region}a"
+    key_name         = "${aws_key_pair.cassandra.key_name}"
+    ami              = "${lookup(var.aws_amis, var.region)}"
+    instance_type    = "${var.instance_type}"
 
     root_block_device {
           volume_type = "standard"
@@ -47,9 +47,9 @@ resource "aws_instance" "dev-jump" {
 }
 
 resource "aws_instance" "aevi-tf-cassandra-node3" {
-    provider = "aws.useast"
-    key_name = "${aws_key_pair.cassandrauseast.key_name}"
-    ami = "${lookup(var.aws_amis, var.region)}"
+    provider      = "aws.useast"
+    key_name      = "${aws_key_pair.cassandrauseast.key_name}"
+    ami           = "${var.aws_amis.us-east-1)}"
     instance_type = "${var.instance_type}"
 
     root_block_device {

@@ -8,4 +8,3 @@ variable "instance_type"
 {
    default="m3.large"
 }
-
