@@ -1,3 +1,6 @@
+#
+# Launch Container Instance
+#
 resource "aws_instance" "aevi-tf-cassandra-node0" {
     count = "3"
     availability_zone= "${var.region}a"
