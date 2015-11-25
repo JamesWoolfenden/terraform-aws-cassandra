@@ -12,4 +12,3 @@ variable "aws_amis" {
       sa-east-1     ="ami-4d883350"
     }
 }
-

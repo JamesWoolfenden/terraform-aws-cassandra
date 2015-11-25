@@ -49,7 +49,7 @@ resource "aws_instance" "dev-jump" {
 resource "aws_instance" "aevi-tf-cassandra-node3" {
     provider      = "aws.useast"
     key_name      = "${aws_key_pair.cassandrauseast.key_name}"
-    ami           = "${var.aws_amis.us-east-1)}"
+    ami           = "${lookup(var.aws_amis, var.secondary_region)}"
     instance_type = "${var.instance_type}"
 
     root_block_device {
