@@ -1,7 +1,7 @@
 #
 # Launch Container Instance
 #
-resource "aws_instance" "aevi-tf-cassandra-node0" {
+resource "aws_instance" "cassandra-node0" {
   count             = "3"
   availability_zone = "${var.region}a"
   key_name          = "${aws_key_pair.cassandra.key_name}"
