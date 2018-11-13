@@ -1,6 +1,3 @@
-#
-# Launch Container Instance
-#
 resource "aws_instance" "cassandra-node0" {
   count             = "3"
   availability_zone = "${var.region}a"
