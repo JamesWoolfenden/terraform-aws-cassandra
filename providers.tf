@@ -12,3 +12,7 @@ provider "aws" {
   region     = "${var.secondary_region}"
   alias      = "useast"
 }
+
+provider "tls" {
+  version = "1.2"
+}
