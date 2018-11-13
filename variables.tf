@@ -1,9 +1,11 @@
 variable "access_key" {
   description = "AWS access key"
 }
+
 variable "secret_key" {
   description = "AWS secret"
 }
+
 variable "region" {
   default = "eu-west-1"
 }
@@ -18,6 +20,7 @@ variable "instance_type" {
 
 variable "aws_amis" {
   description = "These are ubuntu 14.04 ami"
+
   default = {
     us-east-1      = "ami-d05e75b8"
     us-west-1      = "ami-df6a8b9b"

@@ -17,6 +17,7 @@ resource "aws_instance" "cassandra-node0" {
   tags = {
     "Environment" = "Development"
   }
+
   security_groups = ["${aws_security_group.cassandra.name}"]
 }
 
@@ -35,5 +36,6 @@ resource "aws_instance" "remote-cassandra-node3" {
   tags = {
     "Environment" = "Development"
   }
+
   security_groups = ["${aws_security_group.cassandrauseast.name}"]
 }

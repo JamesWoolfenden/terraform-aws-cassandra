@@ -2,6 +2,7 @@ resource "aws_security_group" "cassandrauseast" {
   provider    = "aws.useast"
   name        = "cassandra"
   description = "Terraform cassandra security group"
+
   tags = {
     "Environment" = "Development"
   }
@@ -89,6 +90,7 @@ resource "aws_security_group" "cassandrauseast" {
 resource "aws_security_group" "cassandra" {
   name        = "cassandra"
   description = "Terraform cassandra security group"
+
   tags = {
     "Environment" = "Development"
   }
