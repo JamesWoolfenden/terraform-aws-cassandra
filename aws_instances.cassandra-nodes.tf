@@ -2,7 +2,7 @@ resource "aws_instance" "cassandra-node0" {
   count             = "3"
   availability_zone = "${var.region}a"
   key_name          = "${aws_key_pair.cassandra.key_name}"
-  ami               = "${lookup(var.aws_amis, var.region)}"
+  ami               = "${data.aws_ami.ubuntu.image_id}"
   instance_type     = "${var.instance_type}"
 
   root_block_device {
@@ -21,7 +21,7 @@ resource "aws_instance" "cassandra-node0" {
 resource "aws_instance" "remote-cassandra-node3" {
   provider      = "aws.useast"
   key_name      = "${aws_key_pair.cassandrauseast.key_name}"
-  ami           = "${lookup(var.aws_amis, var.secondary_region)}"
+  ami           = "${data.aws_ami.ubuntu-useast.image_id}"
   instance_type = "${var.instance_type}"
 
   root_block_device {

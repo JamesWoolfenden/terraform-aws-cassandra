@@ -1,7 +1,7 @@
 resource "aws_instance" "dev-jump" {
   availability_zone = "${var.region}a"
   key_name          = "${aws_key_pair.cassandra.key_name}"
-  ami               = "${lookup(var.aws_amis, var.region)}"
+  ami               = "${data.aws_ami.ubuntu.image_id}"
   instance_type     = "${var.instance_type}"
 
   root_block_device {
