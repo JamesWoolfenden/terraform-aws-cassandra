@@ -3,7 +3,7 @@ A project to set up infrastructure in AWS for a multi-region Apache Cassandra cl
 
 This script requires thats you pass in a value for your ssh key. In addition to the vms required for the nodes it creates an ansible host with a playbook pre-installed.
 
-ToDo
+To Do
 ====
 1. The Ansible host needs an ssh key to connect to the new vm host and ssh config.
 2. Make the output of Terraform create the property files for Ansible.
