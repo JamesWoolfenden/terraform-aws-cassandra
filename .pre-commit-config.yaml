@@ -24,3 +24,11 @@ repos:
   hooks:
   -   id: detect-aws-credentials
   -   id: detect-private-key
+- repo: https://github.com/detailyang/pre-commit-shell
+  rev: 1.0.4
+  hooks:
+  - id: shell-lint
+- repo: git://github.com/igorshubovych/markdownlint-cli
+  rev: v0.13.0
+  hooks:
+  - id: markdownlint

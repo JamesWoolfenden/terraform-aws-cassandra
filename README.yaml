@@ -1,0 +1,79 @@
+---
+#
+# This is the canonical configuration for the `README.md`
+# Run `make readme` to rebuild the `README.md`
+#
+
+# Name of this project
+name: terraform-aws-codecommit
+
+# Tags of this project
+tags:
+  - aws
+  - terraform
+  - terraform-modules
+  - codecommit
+
+# Categories of this project
+categories:
+  - terraform-modules/CICD
+
+# Logo for this project
+#logo: docs/slalom-logo.png
+
+# License of this project
+license: "APACHE2"
+
+# Copyrights
+copyrights:
+  - name: "Slalom, LLC"
+    url: "https://slalom.com"
+    year: "2019"
+
+# Canonical GitHub repo
+github_repo: jameswoolfenden/terraform-aws-codecommit
+
+# Badges to display
+badges:
+  - name: "Build Status"
+    image: "https://api.travis-ci.com/JamesWoolfenden/terraform-aws-codecommit.svg?branch=master"
+    url: "https://travis-ci.com/JamesWoolfenden/terraform-aws-codecommit"
+  - name: "Latest Release"
+    image: "https://img.shields.io/github/release/JamesWoolfenden/terraform-aws-codecommit.svg"
+    url: "https://github.com/JamesWoolfenden/terraform-aws-codecommit/releases/latest"
+
+related:
+  - name: "terraform-aws-codebuild"
+    description: "Making a Build pipeline"
+    url: "https://github.com/jameswoolfenden/terraform-aws-codebuild"
+
+# Short description of this project
+description: |-
+  Terraform module to provision an a Cassandra Database cluster.
+  A project to set up infrastructure in AWS for a multi-region Apache Cassandra cluster, I have been using AWS regions eu-west-1 and us-east-1.
+  In addition to the vms required for the nodes it creates an ansible host with a playbook pre-installed.
+
+# How to use this project
+usage: |-
+  Include this repository as a module in your existing terraform code:
+
+  ```hcl
+  module "codecommit" {
+    source     = "git::https://github.com/jameswoolfenden/terraform-aws-codecommit.git?ref=master"
+    default_branch  = "${var.default_branch}"
+    repository_name = "${var.repository_name}"
+    developer_group = "${var.developer_group}"
+    depends_on      = ["${aws_iam_group.developer.group_name}"]
+  }
+  ```
+
+include:
+  - "docs/targets.md"
+  - "docs/terraform.md"
+  - "docs/instructions.md"
+  - "docs/codecommit.md"
+
+# Contributors to this project
+contributors:
+  - name: "James Woolfenden"
+    github: "jameswoolfenden"

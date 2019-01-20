@@ -1,6 +1,16 @@
-terraform.tfstate
-terraform.tfstate.backup
-secrets.tf
-terraform.state
-hosts/
-.terraform/
+# Compiled files
+*.tfstate
+*.tfstate.backup
+
+# Module directory
+.terraform
+.idea
+*.iml
+.build-harness
+build-harness
+*.ini
+
+*~HEAD
+*backup
+
+*.orig
