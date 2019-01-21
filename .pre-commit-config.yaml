@@ -28,6 +28,10 @@ repos:
   rev: 1.0.4
   hooks:
   - id: shell-lint
+- repo: https://github.com/ansible/ansible-lint
+  rev: v4.0.1
+  hooks:
+  - id: ansible-lint
 - repo: git://github.com/igorshubovych/markdownlint-cli
   rev: v0.13.0
   hooks:

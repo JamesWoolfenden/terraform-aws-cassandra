@@ -13,10 +13,11 @@ tags:
   - terraform
   - terraform-modules
   - cassandra
+  - nosql
 
 # Categories of this project
 categories:
-  - terraform-modules/CICD
+  - terraform-modules/nosql
 
 # Logo for this project
 #logo: docs/slalom-logo.png
@@ -36,7 +37,7 @@ github_repo: jameswoolfenden/terraform-aws-cassandra
 # Badges to display
 badges:
   - name: "Build Status"
-    image: "https://api.travis-ci.com/JamesWoolfenden/terraform-aws-cassandra.svg?branch=master"
+    image: "https://travis-ci.com/JamesWoolfenden/terraform-aws-cassandra.svg?branch=master"
     url: "https://travis-ci.com/JamesWoolfenden/terraform-aws-cassandra"
   - name: "Latest Release"
     image: "https://img.shields.io/github/release/JamesWoolfenden/terraform-aws-cassandra.svg"
@@ -58,7 +59,7 @@ usage: |-
 
   ```hcl
   module "cassandra" {
-    source     = "git::https://github.com/jameswoolfenden/terraform-aws-cassandra.git?ref=master"
+    source     = "github.com/jameswoolfenden/terraform-aws-cassandra"
 
     depends_on      = ["${aws_iam_group.developer.group_name}"]
   }

@@ -1,15 +1,18 @@
 variable "region" {
   default     = "eu-west-1"
-  description = ""
+  description = "aws region"
+  type        = "string"
 }
 
 variable "secondary_region" {
-  description = ""
+  description = "Second AWS region"
   default     = "us-east-1"
+  type        = "string"
 }
 
 variable "instance_type" {
-  description = ""
+  description = "aws instance type and class"
+  type        = "string"
 }
 
 # this is enables you to add dependancies

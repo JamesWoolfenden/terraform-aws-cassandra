@@ -2,7 +2,7 @@
 
 [![Slalom][logo]](https://slalom.com)
 
-# terraform-aws-cassandra [![Build Status](https://api.travis-ci.com/JamesWoolfenden/terraform-aws-cassandra.svg?branch=master)](https://travis-ci.com/JamesWoolfenden/terraform-aws-cassandra) [![Latest Release](https://img.shields.io/github/release/JamesWoolfenden/terraform-aws-cassandra.svg)](https://github.com/JamesWoolfenden/terraform-aws-cassandra/releases/latest)
+# terraform-aws-cassandra [![Build Status](https://travis-ci.com/JamesWoolfenden/terraform-aws-cassandra.svg?branch=master)](https://travis-ci.com/JamesWoolfenden/terraform-aws-cassandra) [![Latest Release](https://img.shields.io/github/release/JamesWoolfenden/terraform-aws-cassandra.svg)](https://github.com/JamesWoolfenden/terraform-aws-cassandra/releases/latest)
 
 A project to set up infrastructure in AWS for a multi-region Apache Cassandra cluster, I have been using AWS regions eu-west-1 and us-east-1.
 In addition to the vms required for the nodes it creates an ansible host with a playbook pre-installed.
@@ -19,30 +19,24 @@ Include this repository as a module in your existing terraform code:
 
 ```hcl
 module "cassandra" {
-  source     = "git::https://github.com/jameswoolfenden/terraform-aws-cassandra.git?ref=master"
+  source     = "github.com/jameswoolfenden/terraform-aws-cassandra"
 
   depends_on      = ["${aws_iam_group.developer.group_name}"]
 }
 ```
 
-
-
-
-
-
 ## Makefile Targets
 
-```make
+```cli
 Available targets:
 
+  help:
+                              Help screen
   help/all:
                           Display help for all targets
   help/short:
                         This help short screen
-  help:
-                              Help screen
-  lint:
-                              Lint terraform code
+  lint                                Lint terraform code
 
 ```
 
@@ -51,9 +45,9 @@ Available targets:
 | Name | Description | Type | Default | Required |
 |------|-------------|:----:|:-----:|:-----:|
 | depends_on | This is a way to make a module depends on, which isnt built in. | list | `<list>` | no |
-| instance_type | - | string | - | yes |
-| region | - | string | `eu-west-1` | no |
-| secondary_region | - | string | `us-east-1` | no |
+| instance_type | aws instance type and class | string | - | yes |
+| region | aws region | string | `eu-west-1` | no |
+| secondary_region | Second AWS region | string | `us-east-1` | no |
 
 ## Related Projects
 
@@ -112,7 +106,7 @@ See [LICENSE](LICENSE) for full details.
   [jameswoolfenden_homepage]: https://github.com/jameswoolfenden
   [jameswoolfenden_avatar]: https://github.com/jameswoolfenden.png?size=150
 
-[logo]: docs/slalom-logo.png
+[logo]: /docs/slalom-logo.png
 [website]: https://slalom.com
 [github]: https://github.com/jameswoolfenden
 [slack]: https://cpco.io/slack
