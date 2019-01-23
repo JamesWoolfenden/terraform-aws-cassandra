@@ -25,21 +25,6 @@ module "cassandra" {
 }
 ```
 
-## Makefile Targets
-
-```cli
-Available targets:
-
-  help:
-                              Help screen
-  help/all:
-                          Display help for all targets
-  help/short:
-                        This help short screen
-  lint                                Lint terraform code
-
-```
-
 ## Inputs
 
 | Name | Description | Type | Default | Required |
@@ -97,8 +82,7 @@ See [LICENSE](LICENSE) for full details.
 
 ### Contributors
 
-|  [![James Woolfenden][jameswoolfenden_avatar]][jameswoolfenden_homepage]<br/>[James Woolfenden][jameswoolfenden_homepage] |
-|---|
+  [![James Woolfenden][jameswoolfenden_avatar]][jameswoolfenden_homepage]<br/>[James Woolfenden][jameswoolfenden_homepage] |
 
   [jameswoolfenden_homepage]: https://github.com/jameswoolfenden
   [jameswoolfenden_avatar]: https://github.com/jameswoolfenden.png?size=150
