@@ -1,1 +1,4 @@
-instance_type="t3.micro"
+instance_type = "t3.micro"
+
+common_tags = {
+name = "cassandra" }

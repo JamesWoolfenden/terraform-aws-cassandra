@@ -1,13 +1,13 @@
 resource "aws_instance" "dev-jump" {
   availability_zone = "${var.region}a"
-  key_name          = "${aws_key_pair.cassandra.key_name}"
-  ami               = "${data.aws_ami.ubuntu.image_id}"
-  instance_type     = "${var.instance_type}"
+  key_name          = element(module.ssh-key.keys, 0)
+  ami               = data.aws_ami.ubuntu.image_id
+  instance_type     = var.instance_type
 
   root_block_device {
     volume_type           = "standard"
     volume_size           = 100
-    delete_on_termination = 1
+    delete_on_termination = false
   }
 
   user_data = <<DATA
@@ -24,5 +24,5 @@ DATA
     "Environment" = "Development"
   }
 
-  security_groups = ["${aws_security_group.cassandra.name}"]
+  security_groups = [aws_security_group.cassandra.name]
 }

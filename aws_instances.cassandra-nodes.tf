@@ -1,14 +1,14 @@
 resource "aws_instance" "cassandra-node0" {
   count             = "3"
   availability_zone = "${var.region}a"
-  key_name          = "${aws_key_pair.cassandra.key_name}"
-  ami               = "${data.aws_ami.ubuntu.image_id}"
-  instance_type     = "${var.instance_type}"
+  key_name          = element(module.ssh-key.keys, 0)
+  ami               = data.aws_ami.ubuntu.image_id
+  instance_type     = var.instance_type
 
   root_block_device {
     volume_type           = "standard"
     volume_size           = 100
-    delete_on_termination = 1
+    delete_on_termination = false
   }
 
   tags = {
@@ -19,20 +19,20 @@ resource "aws_instance" "cassandra-node0" {
 }
 
 resource "aws_instance" "remote-cassandra-node3" {
-  provider      = "aws.useast"
-  key_name      = "${aws_key_pair.cassandrauseast.key_name}"
-  ami           = "${data.aws_ami.ubuntu-useast.image_id}"
-  instance_type = "${var.instance_type}"
+  provider      = aws.useast
+  key_name      = element(module.ssh-key-useast.keys, 0)
+  ami           = data.aws_ami.ubuntu-useast.image_id
+  instance_type = var.instance_type
 
   root_block_device {
     volume_type           = "standard"
     volume_size           = 100
-    delete_on_termination = 1
+    delete_on_termination = false
   }
 
   tags = {
     "Environment" = "Development"
   }
 
-  security_groups = ["${aws_security_group.cassandrauseast.name}"]
+  security_groups = [aws_security_group.cassandrauseast.name]
 }

@@ -1,5 +1,5 @@
 data "aws_ami" "ubuntu-useast" {
-  provider    = "aws.useast"
+  provider    = aws.useast
   most_recent = true
 
   filter {

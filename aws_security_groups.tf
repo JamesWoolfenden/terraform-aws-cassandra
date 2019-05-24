@@ -1,5 +1,5 @@
 resource "aws_security_group" "cassandrauseast" {
-  provider    = "aws.useast"
+  provider    = aws.useast
   name        = "cassandra"
   description = "Terraform cassandra security group"
 
