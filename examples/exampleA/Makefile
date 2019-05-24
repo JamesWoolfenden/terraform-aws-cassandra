@@ -4,19 +4,19 @@
 all: init plan build
 
 init:
-	rm -rf .terraform/modules/
+	rm -rf .terraform/
 	terraform init -reconfigure
 
-plan: init
+plan:
 	terraform plan -refresh=true
 
-build: init
+build:
 	terraform apply -auto-approve
 
-check: init
+check:
 	terraform plan -detailed-exitcode
 
-destroy: init
+destroy:
 	terraform destroy -force
 
 docs:

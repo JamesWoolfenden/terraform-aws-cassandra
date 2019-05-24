@@ -30,9 +30,7 @@ resource "aws_instance" "remote-cassandra-node3" {
     delete_on_termination = false
   }
 
-  tags = {
-    "Environment" = "Development"
-  }
+  tags = var.common_tags
 
   security_groups = [aws_security_group.cassandrauseast.name]
 }

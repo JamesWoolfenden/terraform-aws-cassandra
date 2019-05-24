@@ -3,9 +3,7 @@ resource "aws_security_group" "cassandrauseast" {
   name        = "cassandra"
   description = "Terraform cassandra security group"
 
-  tags = {
-    "Environment" = "Development"
-  }
+  tags = var.common_tags
 
   ingress {
     from_port   = 22
@@ -91,9 +89,7 @@ resource "aws_security_group" "cassandra" {
   name        = "cassandra"
   description = "Terraform cassandra security group"
 
-  tags = {
-    "Environment" = "Development"
-  }
+  tags = var.common_tags
 
   ingress {
     from_port   = 22

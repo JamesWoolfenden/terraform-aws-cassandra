@@ -20,9 +20,7 @@ sudo apt-get install -y ansible
 git clone https://github.com/JamesWoolfenden/dse-deployer.git
 DATA
 
-  tags = {
-    "Environment" = "Development"
-  }
+  tags = var.common_tags
 
   security_groups = [aws_security_group.cassandra.name]
 }
