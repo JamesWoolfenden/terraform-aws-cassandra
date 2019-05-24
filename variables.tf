@@ -16,5 +16,6 @@ variable "instance_type" {
 }
 
 variable "common_tags" {
-  type = map
+  description = "Implements the common tags scheme"
+  type        = map
 }
