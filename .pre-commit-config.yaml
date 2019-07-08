@@ -1,6 +1,6 @@
 repos:
 -   repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v2.1.0
+    rev: v2.2.3
     hooks:
     -   id: trailing-whitespace
     -   id: end-of-file-fixer
@@ -17,7 +17,7 @@ repos:
   hooks:
   - id: terraform_fmt
 - repo: https://github.com/pre-commit/pre-commit-hooks.git
-  rev: v2.1.0
+  rev: v2.2.3
   stages:
   - commit
   - push
@@ -25,7 +25,7 @@ repos:
   -   id: detect-aws-credentials
   -   id: detect-private-key
 - repo: https://github.com/detailyang/pre-commit-shell
-  rev: 1.0.4
+  rev: 1.0.5
   hooks:
   - id: shell-lint
 - repo: https://github.com/ansible/ansible-lint
@@ -33,15 +33,6 @@ repos:
   hooks:
   - id: ansible-lint
 - repo: git://github.com/igorshubovych/markdownlint-cli
-  rev: v0.13.0
+  rev: v0.16.0
   hooks:
   - id: markdownlint
-- repo: local
-  hooks:
-  - id: talisman-precommit
-    name: talisman
-    entry: bash -c 'if [ -n "${TALISMAN_HOME:-}" ]; then ${TALISMAN_HOME}/talisman_hook_script pre-commit; else echo "TALISMAN does not exist. Consider installing from https://github.com/thoughtworks/talisman . If you already have talisman installed, please ensure TALISMAN_HOME variable is set to where talisman_hook_script resides, for example, TALISMAN_HOME=${HOME}/.talisman/bin"; fi'
-    language: system
-    pass_filenames: false
-    types: [text]
-    verbose: true
