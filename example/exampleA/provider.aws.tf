@@ -3,8 +3,8 @@ provider "aws" {
   version = "2.16.0"
 }
 
-provider "name" {
-  alias ="useast"
+provider "aws" {
+  alias   = "useast"
   region  = "us-east-1"
   version = "2.16.0"
 }
