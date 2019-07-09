@@ -3,5 +3,7 @@ module "ssh-key-useast" {
   ssmpath     = "/core/cassandra/ssh/dev"
   key_names   = ["cassandra"]
   common_tags = var.common_tags
-  region      = "us-east-1"
+  providers = {
+    aws.useast = "aws.useast"
+  }
 }

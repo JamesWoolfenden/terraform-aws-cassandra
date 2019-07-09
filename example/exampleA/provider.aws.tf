@@ -1,10 +1,8 @@
 provider "aws" {
   region  = "eu-west-1"
-  version = "2.16.0"
+  version = "2.18.0"
 }
 
-provider "aws" {
-  alias   = "useast"
-  region  = "us-east-1"
-  version = "2.16.0"
+provider "tls" {
+  version = "2.0"
 }
