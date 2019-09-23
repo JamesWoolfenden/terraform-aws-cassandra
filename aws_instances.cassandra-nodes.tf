@@ -11,9 +11,7 @@ resource "aws_instance" "cassandra-node0" {
     delete_on_termination = false
   }
 
-  tags = {
-    "Environment" = "Development"
-  }
+  tags = var.common_tags
 
   security_groups = ["${aws_security_group.cassandra.name}"]
 }

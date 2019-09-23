@@ -17,6 +17,8 @@ Include this repository as a module in your existing terraform code:
 ```hcl
 module "cassandra" {
   source     = "github.com/jameswoolfenden/terraform-aws-cassandra"
+  instance_type = var.instance_type
+  common_tags   = var.common_tags
 }
 ```
 
