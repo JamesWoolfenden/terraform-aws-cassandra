@@ -33,6 +33,13 @@ module "cassandra" {
 | region | aws region | string | `"eu-west-1"` | no |
 | secondary\_region | Second AWS region | string | `"us-east-1"` | no |
 
+## Outputs
+
+| Name | Description |
+|------|-------------|
+| local\_nodes |  |
+| security\_group |  |
+
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 
 ## Related Projects
