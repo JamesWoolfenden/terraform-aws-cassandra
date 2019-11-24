@@ -4,7 +4,7 @@
 # terraform-aws-cassandra [![Build Status](https://travis-ci.com/JamesWoolfenden/terraform-aws-cassandra.svg?branch=master)](https://travis-ci.com/JamesWoolfenden/terraform-aws-cassandra) [![Latest Release](https://img.shields.io/github/release/JamesWoolfenden/terraform-aws-cassandra.svg)](https://github.com/JamesWoolfenden/terraform-aws-cassandra/releases/latest)
 
 A project to set up infrastructure in AWS for a multi-region Apache Cassandra cluster, I have been using AWS regions eu-west-1 and us-east-1.
-In addition to the vms required for the nodes it creates an ansible host with a playbook pre-installed.
+In addition to the vms required for the nodes it creates an Ansible host with a playbook pre-installed.
 
 ---
 
@@ -29,6 +29,7 @@ module "cassandra" {
 |------|-------------|:----:|:-----:|:-----:|
 | common\_tags | Implements the common tags scheme | map | n/a | yes |
 | instance\_type | aws instance type and class | string | n/a | yes |
+| local\_nodes | Number of Cassandra instances in main region | string | `"3"` | no |
 | region | aws region | string | `"eu-west-1"` | no |
 | secondary\_region | Second AWS region | string | `"us-east-1"` | no |
 
@@ -81,7 +82,7 @@ under the License.
 
 ### Contributors
 
-  [![James Woolfenden][jameswoolfenden_avatar]][jameswoolfenden_homepage]<br/>[James Woolfenden][jameswoolfenden_homepage] 
+  [![James Woolfenden][jameswoolfenden_avatar]][jameswoolfenden_homepage]<br/>[James Woolfenden][jameswoolfenden_homepage]
 
   [jameswoolfenden_homepage]: https://github.com/jameswoolfenden
   [jameswoolfenden_avatar]: https://github.com/jameswoolfenden.png?size=150

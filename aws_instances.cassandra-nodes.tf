@@ -1,5 +1,5 @@
 resource "aws_instance" "cassandra-node0" {
-  count             = "3"
+  count             = var.local_nodes
   availability_zone = "${var.region}a"
   key_name          = element(module.ssh-key.keys, 0)
   ami               = data.aws_ami.ubuntu.image_id
@@ -13,13 +13,13 @@ resource "aws_instance" "cassandra-node0" {
 
   tags = var.common_tags
 
-  security_groups = ["${aws_security_group.cassandra.name}"]
+  security_groups = [aws_security_group.cassandra.name]
 }
 
 resource "aws_instance" "remote-cassandra-node3" {
-  provider      = aws.useast
-  key_name      = element(module.ssh-key-useast.keys, 0)
-  ami           = data.aws_ami.ubuntu-useast.image_id
+  provider      = aws.secondary
+  key_name      = element(module.ssh-key-secondary.keys, 0)
+  ami           = data.aws_ami.ubuntu-secondary.image_id
   instance_type = var.instance_type
 
   root_block_device {
@@ -30,5 +30,5 @@ resource "aws_instance" "remote-cassandra-node3" {
 
   tags = var.common_tags
 
-  security_groups = [aws_security_group.cassandrauseast.name]
+  security_groups = [aws_security_group.cassandrasecondary.name]
 }

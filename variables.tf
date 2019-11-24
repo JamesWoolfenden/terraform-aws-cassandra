@@ -19,3 +19,8 @@ variable "common_tags" {
   description = "Implements the common tags scheme"
   type        = map
 }
+
+variable "local_nodes" {
+  description = "Number of Cassandra instances in main region"
+  default     = 3
+}
