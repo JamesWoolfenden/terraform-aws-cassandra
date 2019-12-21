@@ -34,6 +34,7 @@ module "cassandra" {
 | region | aws region | string | `"eu-west-1"` | no |
 | secondary\_region | Second AWS region | string | `"us-east-1"` | no |
 | ssh-inbound-range | CIDRs of address that are allowed to ssh in. | list | `[ "0.0.0.0/0" ]` | no |
+| subnet\_ids |  | list | n/a | yes |
 
 ## Outputs
 

@@ -36,3 +36,7 @@ variable "ssh-inbound-range" {
   type        = list
   default     = ["0.0.0.0/0"]
 }
+
+variable "subnet_ids" {
+  type = list
+}

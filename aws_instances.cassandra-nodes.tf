@@ -1,9 +1,9 @@
 resource "aws_instance" "cassandra-node0" {
-  count             = var.local_nodes
-  availability_zone = "${var.region}a"
-  key_name          = element(module.ssh-key.keys, 0)
-  ami               = data.aws_ami.ubuntu.image_id
-  instance_type     = var.instance_type
+  count         = var.local_nodes
+  subnet_id     = var.subnet_ids[count.index]
+  key_name      = element(module.ssh-key.keys, 0)
+  ami           = data.aws_ami.ubuntu.image_id
+  instance_type = var.instance_type
 
   root_block_device {
     volume_type           = "standard"
