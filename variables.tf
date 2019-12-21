@@ -24,3 +24,15 @@ variable "local_nodes" {
   description = "Number of Cassandra instances in main region"
   default     = 3
 }
+
+variable "allowed_ranges" {
+  description = "Allowed ranges that can access the cluster"
+  type        = list
+  default     = ["0.0.0.0/0"]
+}
+
+variable "ssh-inbound-range" {
+  description = "CIDRs of address that are allowed to ssh in."
+  type        = list
+  default     = ["0.0.0.0/0"]
+}

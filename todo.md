@@ -5,7 +5,7 @@
 3. Modify Ansible hosts ip list.
 4. Execute the Ansible playbook, include a delay for each node in the cluster.
 5. A test to check that the cluster and all nodes are up.
-6. This should be in some private subnets of a vpc. Theres no reason to make it so public.
+6. This should be in some private subnets of a vpc. There's no reason to make it so public.
 7. The SC groups are wide open.
 8. The nodes having public IPS its way to open, you need to peer the vpcs across regions so that cassandra could replicate.
 9. Keep the bastion in a seperate tf implementation so it can be deprovision.

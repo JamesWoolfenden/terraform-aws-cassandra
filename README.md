@@ -27,11 +27,13 @@ module "cassandra" {
 
 | Name | Description | Type | Default | Required |
 |------|-------------|:----:|:-----:|:-----:|
+| allowed\_ranges | Allowed ranges that can access the cluster | list | `[ "0.0.0.0/0" ]` | no |
 | common\_tags | Implements the common tags scheme | map | n/a | yes |
 | instance\_type | aws instance type and class | string | n/a | yes |
 | local\_nodes | Number of Cassandra instances in main region | string | `"3"` | no |
 | region | aws region | string | `"eu-west-1"` | no |
 | secondary\_region | Second AWS region | string | `"us-east-1"` | no |
+| ssh-inbound-range | CIDRs of address that are allowed to ssh in. | list | `[ "0.0.0.0/0" ]` | no |
 
 ## Outputs
 

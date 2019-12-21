@@ -4,6 +4,6 @@ module "cassandra" {
   common_tags   = var.common_tags
   providers = {
     aws           = aws
-    aws.secondary = "aws.useast"
+    aws.secondary = aws.useast
   }
 }

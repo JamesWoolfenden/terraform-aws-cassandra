@@ -4,6 +4,6 @@ module "ssh-key-secondary" {
   key_names   = ["cassandra"]
   common_tags = var.common_tags
   providers = {
-    aws = "aws.secondary"
+    aws = aws.secondary
   }
 }
