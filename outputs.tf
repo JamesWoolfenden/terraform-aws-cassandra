@@ -1,6 +1,10 @@
 
-output "local_nodes" {
-  value = aws_instance.cassandra-node0
+output "launch_configuration" {
+  value = aws_launch_configuration.cassandra
+}
+
+output "scaling_group" {
+  value = aws_autoscaling_group.cassandra
 }
 
 output "security_group" {

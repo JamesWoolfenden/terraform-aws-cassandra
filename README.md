@@ -28,19 +28,24 @@ module "cassandra" {
 | Name | Description | Type | Default | Required |
 |------|-------------|:----:|:-----:|:-----:|
 | allowed\_ranges | Allowed ranges that can access the cluster | list | `[ "0.0.0.0/0" ]` | no |
-| common\_tags | Implements the common tags scheme | map | n/a | yes |
+| common\_tags | Implements the common tags scheme | map(string) | n/a | yes |
 | instance\_type | aws instance type and class | string | n/a | yes |
-| local\_nodes | Number of Cassandra instances in main region | string | `"3"` | no |
+| key\_names |  | list | `[ "cassandra" ]` | no |
+| max\_size | Maximum number of instances | number | `"3"` | no |
+| min\_size | Minimum number of instances | number | `"3"` | no |
+| prefix |  | string | `"cass-"` | no |
 | region | aws region | string | `"eu-west-1"` | no |
-| secondary\_region | Second AWS region | string | `"us-east-1"` | no |
+| scaling\_group |  | string | `"cassandra"` | no |
 | ssh-inbound-range | CIDRs of address that are allowed to ssh in. | list | `[ "0.0.0.0/0" ]` | no |
-| subnet\_ids |  | list | n/a | yes |
+| ssmpath |  | string | `"/core/cassandra/ssh/dev"` | no |
+| subnet\_ids | List of subnet Ids | list | n/a | yes |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
-| local\_nodes |  |
+| launch\_configuration |  |
+| scaling\_group |  |
 | security\_group |  |
 
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->

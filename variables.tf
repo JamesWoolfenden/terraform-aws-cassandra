@@ -4,12 +4,6 @@ variable "region" {
   type        = string
 }
 
-variable "secondary_region" {
-  description = "Second AWS region"
-  default     = "us-east-1"
-  type        = string
-}
-
 variable "instance_type" {
   description = "aws instance type and class"
   type        = string
@@ -17,12 +11,7 @@ variable "instance_type" {
 
 variable "common_tags" {
   description = "Implements the common tags scheme"
-  type        = map
-}
-
-variable "local_nodes" {
-  description = "Number of Cassandra instances in main region"
-  default     = 3
+  type        = map(string)
 }
 
 variable "allowed_ranges" {
@@ -38,5 +27,30 @@ variable "ssh-inbound-range" {
 }
 
 variable "subnet_ids" {
-  type = list
+  description = "List of subnet Ids"
+  type        = list
+}
+
+
+variable "scaling_group" {
+  type    = string
+  default = "cassandra"
+}
+
+variable "prefix" {
+  type    = string
+  default = "cass-"
+}
+
+
+variable "min_size" {
+  description = "Minimum number of instances"
+  type        = number
+  default     = 3
+}
+
+variable "max_size" {
+  description = "Maximum number of instances"
+  type        = number
+  default     = 3
 }
