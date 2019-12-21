@@ -8,9 +8,12 @@ resource "aws_autoscaling_group" "cassandra" {
     create_before_destroy = true
   }
 
-  tag {
-    key                 = "Name"
-    propagate_at_launch = true
-    value               = "Cassandra"
+  dynamic "tag" {
+    for_each = var.common_tags
+    content {
+      key                 = tag.key
+      propagate_at_launch = true
+      value               = tag.value
+    }
   }
 }
