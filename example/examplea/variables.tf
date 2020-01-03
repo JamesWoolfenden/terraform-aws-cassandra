@@ -4,7 +4,7 @@ variable "region" {
 }
 
 variable "instance_type" {
-  type       = map 
+  type       = string 
   description="AWS instance type"
 }
 
