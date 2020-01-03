@@ -3,12 +3,9 @@ variable "region" {
   type    = string
 }
 
-variable "secondary_region" {
-  default = "us-east-1"
-  type    = string
-}
-
-variable "instance_type" {}
+variable "instance_type" {
+descrip[tion
+  }
 
 variable "common_tags" {
   type = map
