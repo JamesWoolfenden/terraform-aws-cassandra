@@ -16,4 +16,5 @@ resource "aws_autoscaling_group" "cassandra" {
       value               = tag.value
     }
   }
+
 }

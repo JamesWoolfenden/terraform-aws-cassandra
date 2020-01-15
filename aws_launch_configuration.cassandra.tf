@@ -1,7 +1,6 @@
 resource "aws_launch_configuration" "cassandra" {
   name_prefix       = var.prefix
-  image_id          = data.aws_ami.ubuntu.id
-  key_name          = element(module.ssh-key.keys, 0)
+  image_id          = data.aws_ami.ami.id
   instance_type     = var.instance_type
   enable_monitoring = true
 

@@ -3,6 +3,7 @@ module "cassandra" {
   instance_type = var.instance_type
   common_tags   = var.common_tags
   subnet_ids    = data.aws_subnet_ids.subs.ids
+  vpc_id        = tolist(data.aws_vpcs.main.ids)[0]
   providers = {
     aws = aws
   }

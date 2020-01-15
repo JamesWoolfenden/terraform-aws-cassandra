@@ -54,3 +54,17 @@ variable "max_size" {
   type        = number
   default     = 3
 }
+
+variable "ami" {
+  type=map
+  description="Contains information to select desired AMI"
+  default={
+    filter=["ubuntu/images/hvm-ssd/ubuntu-bionic-18.04-amd64-server*"]
+    owners=["099720109477"]
+  }
+}
+
+variable "vpc_id"  {
+  type=string
+  description="The id of the vpc for the security group"
+}
