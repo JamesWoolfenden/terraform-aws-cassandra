@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 cd example/examplea || return
-echo init
+rm .terraform -fr
 terraform init
-echo validate
 terraform validate
