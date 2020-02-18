@@ -8,6 +8,7 @@ resource "aws_launch_configuration" "cassandra" {
     volume_type           = "standard"
     volume_size           = 100
     delete_on_termination = false
+    encrypted             = true
   }
 
   security_groups = [aws_security_group.cassandra.id]

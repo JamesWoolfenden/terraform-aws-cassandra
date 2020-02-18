@@ -3,7 +3,6 @@
 
 # terraform-aws-cassandra [![Build Status](https://travis-ci.com/JamesWoolfenden/terraform-aws-cassandra.svg?branch=master)](https://travis-ci.com/JamesWoolfenden/terraform-aws-cassandra) [![Latest Release](https://img.shields.io/github/release/JamesWoolfenden/terraform-aws-cassandra.svg)](https://github.com/JamesWoolfenden/terraform-aws-cassandra/releases/latest)[![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit)
 
-
 A project to set up infrastructure in AWS for a multi-region Apache Cassandra cluster, I have been using AWS regions eu-west-1 and us-east-1.
 In addition to the vms required for the nodes it creates an Ansible host with a playbook pre-installed.
 
@@ -24,30 +23,36 @@ module "cassandra" {
 ```
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+## Providers
+
+| Name | Version |
+|------|---------|
+| aws | n/a |
+
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-|------|-------------|:----:|:-----:|:-----:|
-| allowed\_ranges | Allowed ranges that can access the cluster | list | `[ "0.0.0.0/0" ]` | no |
-| common\_tags | Implements the common tags scheme | map(string) | n/a | yes |
-| instance\_type | aws instance type and class | string | n/a | yes |
-| key\_names |  | list | `[ "cassandra" ]` | no |
-| max\_size | Maximum number of instances | number | `"3"` | no |
-| min\_size | Minimum number of instances | number | `"3"` | no |
-| prefix |  | string | `"cass-"` | no |
-| region | aws region | string | `"eu-west-1"` | no |
-| scaling\_group |  | string | `"cassandra"` | no |
-| ssh-inbound-range | CIDRs of address that are allowed to ssh in. | list | `[ "0.0.0.0/0" ]` | no |
-| ssmpath |  | string | `"/core/cassandra/ssh/dev"` | no |
-| subnet\_ids | List of subnet Ids | list | n/a | yes |
+|------|-------------|------|---------|:-----:|
+| allowed\_ranges | Allowed ranges that can access the cluster | `list` | <pre>[<br>  "0.0.0.0/0"<br>]<br></pre> | no |
+| ami | Contains information to select desired AMI | `map` | <pre>{<br>  "filter": [<br>    "ubuntu/images/hvm-ssd/ubuntu-bionic-18.04-amd64-server*"<br>  ],<br>  "owners": [<br>    "099720109477"<br>  ]<br>}<br></pre> | no |
+| common\_tags | Implements the common tags scheme | `map(string)` | n/a | yes |
+| instance\_type | aws instance type and class | `string` | n/a | yes |
+| max\_size | Maximum number of instances | `number` | `3` | no |
+| min\_size | Minimum number of instances | `number` | `3` | no |
+| prefix | n/a | `string` | `"cass-"` | no |
+| region | aws region | `string` | `"eu-west-1"` | no |
+| scaling\_group | n/a | `string` | `"cassandra"` | no |
+| ssh-inbound-range | CIDRs of address that are allowed to ssh in. | `list` | <pre>[<br>  "0.0.0.0/0"<br>]<br></pre> | no |
+| subnet\_ids | List of subnet Ids | `list` | n/a | yes |
+| vpc\_id | The id of the vpc for the security group | `string` | n/a | yes |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
-| launch\_configuration |  |
-| scaling\_group |  |
-| security\_group |  |
+| launch\_configuration | n/a |
+| scaling\_group | n/a |
+| security\_group | n/a |
 
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 

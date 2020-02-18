@@ -8,5 +8,3 @@ data "aws_ami" "ami" {
 
   owners = var.ami["owners"]
 }
-
-

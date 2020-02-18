@@ -4,8 +4,8 @@ variable "region" {
 }
 
 variable "instance_type" {
-  type       = string 
-  description="AWS instance type"
+  type        = string
+  description = "AWS instance type"
 }
 
 variable "common_tags" {

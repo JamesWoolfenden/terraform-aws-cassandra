@@ -16,11 +16,11 @@ module "cassandra" {
 
 
 variable "ami" {
-  type=map
-  description="Contains information to select desired AMI"
-  default={
-    filter=["amzn2-ami-hvm-*-x86_64-ebs"]
-    owners=["amazon"]
+  type        = map
+  description = "Contains information to select desired AMI"
+  default = {
+    filter = ["amzn2-ami-hvm-*-x86_64-ebs"]
+    owners = ["amazon"]
   }
 }
 
