@@ -1,6 +1,7 @@
 provider "aws" {
+  version = "~>2.52"
   region  = "eu-west-1"
-  version = "~>2.48"
+
 }
 
 provider "tls" {
