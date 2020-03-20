@@ -8,8 +8,7 @@
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit)
 [![pre-commit](https://img.shields.io/badge/checkov-verified-brightgreen)](https://www.checkov.io/)
 
-A project to set up infrastructure in AWS for a multi-region Apache Cassandra cluster, I have been using AWS regions eu-west-1 and us-east-1.
-In addition to the vms required for the nodes it creates an Ansible host with a playbook pre-installed.
+A project to set up infrastructure in AWS for an Apache Cassandra cluster, thia module will create Cassandra on Ec2 and autocluster the nodes.
 
 ---
 
