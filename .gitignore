@@ -2,16 +2,21 @@
 *.tfstate
 *.tfstate.backup
 *.zip
+*.bak
 
 # Module directory
+.terraform/
 .terraform
 .idea
 *.iml
-.build-harness
-build-harness
+*.orig
+*.ini
+*~HEAD
+*backup
 *.ini
 tmp
+lambda
 *~HEAD
 *backup
 
-*.orig
+.terraform.tfstate.lock.info
