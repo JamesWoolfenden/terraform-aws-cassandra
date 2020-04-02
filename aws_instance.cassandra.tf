@@ -8,6 +8,7 @@ resource "aws_instance" "cassandra" {
     volume_type           = "standard"
     volume_size           = 100
     delete_on_termination = false
+    encrypted             = true
   }
 
   vpc_security_group_ids = [aws_security_group.cassandra.id]

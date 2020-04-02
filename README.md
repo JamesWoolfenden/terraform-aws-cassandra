@@ -15,8 +15,10 @@ A project to set up infrastructure in AWS for an Apache Cassandra cluster, thia 
 It's 100% Open Source and licensed under the [APACHE2](LICENSE).
 
 ## Usage
+
 The folder **example/examplea** contains a complete sample illustration of how to use this module.
-```
+
+```tree
 ├───examplea
 │       data.tf
 │       examplea.auto.tfvars
@@ -91,7 +93,7 @@ terraform apply
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:-----:|
-| allowed\_ranges | Allowed ranges that can access the cluster | `list` | <pre>[<br>  "0.0.0.0/0"<br>]</pre> | no |
+| allowed\_ranges | Allowed ranges that can access the cluster | `list` | <pre>[<br>  "0.0.0.0/0"<br>]<br></pre> | no |
 | ami | Contains information to select desired AMI | `map` | n/a | yes |
 | common\_tags | Implements the common tags scheme | `map(string)` | n/a | yes |
 | config-file | n/a | `string` | `"/etc/dse/cassandra/cassandra.yaml"` | no |
@@ -99,7 +101,7 @@ terraform apply
 | max\_size | Maximum number of instances | `number` | `3` | no |
 | min\_size | Minimum number of instances | `number` | `3` | no |
 | private\_ips | List of ips for the cassandra nodes | `list` | n/a | yes |
-| ssh-inbound-range | CIDRs of address that are allowed to ssh in. | `list` | <pre>[<br>  "0.0.0.0/0"<br>]</pre> | no |
+| ssh-inbound-range | CIDRs of address that are allowed to ssh in. | `list` | <pre>[<br>  "0.0.0.0/0"<br>]<br></pre> | no |
 | subnet\_ids | List of subnet Ids | `list` | n/a | yes |
 | template-file | n/a | `string` | `"cassandra.tmpl"` | no |
 | vpc\_id | n/a | `string` | n/a | yes |
