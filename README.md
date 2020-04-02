@@ -15,16 +15,38 @@ A project to set up infrastructure in AWS for an Apache Cassandra cluster, thia 
 It's 100% Open Source and licensed under the [APACHE2](LICENSE).
 
 ## Usage
+The folder **example/examplea** contains a complete sample illustration of how to use this module.
+```
+├───examplea
+│       data.tf
+│       examplea.auto.tfvars
+│       Makefile
+│       module.cassandra.tf
+│       outputs.tf
+│       provider.aws.tf
+│       variables.tf
+```
 
-Include this repository as a module in your existing terraform code:
+As a minimum you must include a module reference in your own template Terraform code e.g. **module.cassandra.tf**:
 
 ```hcl
 module "cassandra" {
-  source     = "github.com/jameswoolfenden/terraform-aws-cassandra"
+  source        = "../../"
   instance_type = var.instance_type
   common_tags   = var.common_tags
+  subnet_ids    = data.aws_subnet_ids.subs.ids
+  vpc_id        = tolist(data.aws_vpcs.main.ids)[0]
+  providers = {
+    aws = aws
+  }
+  allowed_ranges    = [module.myip.cidr]
+  ssh-inbound-range = [module.myip.cidr]
+  max_size          = 1
+  min_size          = 1
 }
 ```
+
+You will also need to define variables **variables.tf** and supply values ***examplea.auto.tfvars**.
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Providers
