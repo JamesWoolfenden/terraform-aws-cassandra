@@ -48,6 +48,14 @@ module "cassandra" {
 
 You will also need to define variables **variables.tf** and supply values ***examplea.auto.tfvars**.
 
+If you want to test the modules usage execute Terraform in the examplea folder:
+
+```cli
+cd example/examplea
+terraform init
+terraform apply
+```
+
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Providers
 
