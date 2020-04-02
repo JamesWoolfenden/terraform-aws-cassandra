@@ -46,7 +46,7 @@ module "cassandra" {
 }
 ```
 
-You will also need to define variables **variables.tf** and supply values ***examplea.auto.tfvars**.
+You will also need to define variables **variables.tf** and supply values **examplea.auto.tfvars**.
 
 If you want to test the modules usage execute Terraform in the examplea folder:
 
