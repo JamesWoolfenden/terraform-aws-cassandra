@@ -4,3 +4,6 @@ data "aws_subnet_ids" "subs" {
 
 data "aws_vpcs" "main" {
 }
+
+data "aws_caller_identity" "current" {
+}

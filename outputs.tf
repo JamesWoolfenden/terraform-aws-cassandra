@@ -1,10 +1,6 @@
 
-output "launch_configuration" {
-  value = aws_launch_configuration.cassandra
-}
-
-output "scaling_group" {
-  value = aws_autoscaling_group.cassandra
+output "instances" {
+  value = aws_instance.cassandra
 }
 
 output "security_group" {

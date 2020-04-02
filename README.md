@@ -35,25 +35,49 @@ module "cassandra" {
   instance_type = var.instance_type
   common_tags   = var.common_tags
   subnet_ids    = data.aws_subnet_ids.subs.ids
-  vpc_id        = tolist(data.aws_vpcs.main.ids)[0]
-  providers = {
-    aws = aws
-  }
+  #add the private ips
+  private_ips       = []
   allowed_ranges    = [module.myip.cidr]
   ssh-inbound-range = [module.myip.cidr]
-  max_size          = 1
-  min_size          = 1
+  ami               = local.ami
+  vpc_id            = tolist(data.aws_vpcs.main.ids)[0]
 }
 ```
 
 You will also need to define variables **variables.tf** and supply values **examplea.auto.tfvars**.
-
+You'll need to adjust the values to your own.
+You will also need build a Cassandra AMI, see the Packer folder for that template.
 If you want to test the modules usage execute Terraform in the examplea folder:
 
 ```cli
 cd example/examplea
-terraform init
+✔ /mnt/c/code/slalom/aws/terraform-aws-cassandra/example/examplea [master|✚ 1⚑ 1]
+09:56 $ make init
+rm -rf .terraform/
+terraform init -reconfigure
+Initializing modules...
+- cassandra in ../..
+Downloading jameswoolfenden/ip/http 0.2.7 for myip...
+- myip in .terraform/modules/myip/terraform-http-ip-0.2.7
+
+Initializing the backend...
+
+Initializing provider plugins...
+- Checking for available provider plugins...
+- Downloading plugin for provider "aws" (hashicorp/aws) 2.54.0...
+
+Terraform has been successfully initialized!
+
+You may now begin working with Terraform. Try running "terraform plan" to see
+any changes that are required for your infrastructure. All Terraform commands
+should now work.
+
+If you ever set or change modules or backend configuration for Terraform,
+rerun this command to reinitialize your working directory. If you forget, other
+commands will detect it and remind you to do so if necessary.
+
 terraform apply
+....
 ```
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
@@ -67,25 +91,24 @@ terraform apply
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:-----:|
-| allowed\_ranges | Allowed ranges that can access the cluster | `list` | <pre>[<br>  "0.0.0.0/0"<br>]<br></pre> | no |
-| ami | Contains information to select desired AMI | `map` | <pre>{<br>  "filter": [<br>    "ubuntu/images/hvm-ssd/ubuntu-bionic-18.04-amd64-server*"<br>  ],<br>  "owners": [<br>    "099720109477"<br>  ]<br>}<br></pre> | no |
+| allowed\_ranges | Allowed ranges that can access the cluster | `list` | <pre>[<br>  "0.0.0.0/0"<br>]</pre> | no |
+| ami | Contains information to select desired AMI | `map` | n/a | yes |
 | common\_tags | Implements the common tags scheme | `map(string)` | n/a | yes |
+| config-file | n/a | `string` | `"/etc/dse/cassandra/cassandra.yaml"` | no |
 | instance\_type | aws instance type and class | `string` | n/a | yes |
 | max\_size | Maximum number of instances | `number` | `3` | no |
 | min\_size | Minimum number of instances | `number` | `3` | no |
-| prefix | n/a | `string` | `"cass-"` | no |
-| region | aws region | `string` | `"eu-west-1"` | no |
-| scaling\_group | n/a | `string` | `"cassandra"` | no |
-| ssh-inbound-range | CIDRs of address that are allowed to ssh in. | `list` | <pre>[<br>  "0.0.0.0/0"<br>]<br></pre> | no |
+| private\_ips | List of ips for the cassandra nodes | `list` | n/a | yes |
+| ssh-inbound-range | CIDRs of address that are allowed to ssh in. | `list` | <pre>[<br>  "0.0.0.0/0"<br>]</pre> | no |
 | subnet\_ids | List of subnet Ids | `list` | n/a | yes |
-| vpc\_id | The id of the vpc for the security group | `string` | n/a | yes |
+| template-file | n/a | `string` | `"cassandra.tmpl"` | no |
+| vpc\_id | n/a | `string` | n/a | yes |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
-| launch\_configuration | n/a |
-| scaling\_group | n/a |
+| instances | n/a |
 | security\_group | n/a |
 
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->

@@ -11,3 +11,10 @@ variable "instance_type" {
 variable "common_tags" {
   type = map
 }
+
+locals {
+  ami = {
+    filter = ["cassandra-BASE-v*"]
+    owners = [data.aws_caller_identity.current.account_id]
+  }
+}

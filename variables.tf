@@ -1,8 +1,3 @@
-variable "region" {
-  default     = "eu-west-1"
-  description = "aws region"
-  type        = string
-}
 
 variable "instance_type" {
   description = "aws instance type and class"
@@ -32,17 +27,6 @@ variable "subnet_ids" {
 }
 
 
-variable "scaling_group" {
-  type    = string
-  default = "cassandra"
-}
-
-variable "prefix" {
-  type    = string
-  default = "cass-"
-}
-
-
 variable "min_size" {
   description = "Minimum number of instances"
   type        = number
@@ -55,16 +39,26 @@ variable "max_size" {
   default     = 3
 }
 
+
+variable "template-file" {
+  default = "cassandra.tmpl"
+}
+
+variable "config-file" {
+  default = "/etc/dse/cassandra/cassandra.yaml"
+}
+
 variable "ami" {
   type        = map
   description = "Contains information to select desired AMI"
-  default = {
-    filter = ["ubuntu/images/hvm-ssd/ubuntu-bionic-18.04-amd64-server*"]
-    owners = ["099720109477"]
-  }
 }
 
+
 variable "vpc_id" {
-  type        = string
-  description = "The id of the vpc for the security group"
+  type = string
+}
+
+variable "private_ips" {
+  type        = list
+  description = "List of ips for the cassandra nodes"
 }

@@ -3,14 +3,12 @@ module "cassandra" {
   instance_type = var.instance_type
   common_tags   = var.common_tags
   subnet_ids    = data.aws_subnet_ids.subs.ids
-  vpc_id        = tolist(data.aws_vpcs.main.ids)[0]
-  providers = {
-    aws = aws
-  }
+  #add the private ips
+  private_ips       = []
   allowed_ranges    = [module.myip.cidr]
   ssh-inbound-range = [module.myip.cidr]
-  max_size          = 1
-  min_size          = 1
+  ami               = local.ami
+  vpc_id            = tolist(data.aws_vpcs.main.ids)[0]
 }
 
 

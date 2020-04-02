@@ -1,0 +1,176 @@
+cluster_name: 'authentic'
+hinted_handoff_enabled: true
+max_hint_window_in_ms: 10800000 # 3 hours
+hinted_handoff_throttle_in_kb: 1024
+max_hints_delivery_threads: 2
+hints_directory: /var/lib/cassandra/hints
+hints_flush_period_in_ms: 10000
+max_hints_file_size_in_mb: 128
+batchlog_replay_throttle_in_kb: 1024
+authenticator: com.datastax.bdp.cassandra.auth.DseAuthenticator
+authorizer: com.datastax.bdp.cassandra.auth.DseAuthorizer
+role_manager: com.datastax.bdp.cassandra.auth.DseRoleManager
+system_keyspaces_filtering: false
+
+roles_validity_in_ms: 120000
+permissions_validity_in_ms: 120000
+partitioner: org.apache.cassandra.dht.Murmur3Partitioner
+data_file_directories:
+     - /var/lib/cassandra/data
+
+commitlog_directory: /var/lib/cassandra/commitlog
+cdc_enabled: false
+cdc_raw_directory: /var/lib/cassandra/cdc_raw
+disk_failure_policy: stop
+commit_failure_policy: stop
+prepared_statements_cache_size_mb:
+row_cache_size_in_mb: 0
+row_cache_save_period: 0
+counter_cache_size_in_mb:
+counter_cache_save_period: 7200
+saved_caches_directory: /var/lib/cassandra/saved_caches
+commitlog_sync: periodic
+commitlog_sync_period_in_ms: 10000
+commitlog_segment_size_in_mb: 32
+seed_provider:
+    - class_name: org.apache.cassandra.locator.SimpleSeedProvider
+      parameters:
+          # seeds is actually a comma-delimited list of addresses.
+          # Ex: "<ip1>,<ip2>,<ip3>"
+          - seeds: ${seeds}
+rpc_address: 0.0.0.0
+broadcast_rpc_address: ${private_ip}
+memtable_allocation_type: offheap_objects
+trickle_fsync: true
+trickle_fsync_interval_in_kb: 10240
+storage_port: 7000
+ssl_storage_port: 7001
+listen_address: ${private_ip}
+# Address to broadcast to other database nodes.
+# Leaving this blank will set it to the same value as listen_address
+# broadcast_address: 1.2.3.4
+start_native_transport: true
+native_transport_port: 9042
+native_transport_address: localhost
+native_transport_keepalive: true
+incremental_backups: false
+snapshot_before_compaction: false
+auto_snapshot: true
+column_index_size_in_kb: 16
+column_index_cache_size_in_kb: 2
+concurrent_materialized_view_builders: 2
+compaction_throughput_mb_per_sec: 16
+sstable_preemptive_open_interval_in_mb: 50
+
+read_request_timeout_in_ms: 5000
+range_request_timeout_in_ms: 10000
+aggregated_request_timeout_in_ms: 120000
+write_request_timeout_in_ms: 2000
+counter_write_request_timeout_in_ms: 5000
+cas_contention_timeout_in_ms: 1000
+truncate_request_timeout_in_ms: 60000
+request_timeout_in_ms: 10000
+slow_query_log_timeout_in_ms: 500
+cross_node_timeout: false
+endpoint_snitch: Ec2Snitch
+dynamic_snitch_update_interval_in_ms: 100
+dynamic_snitch_reset_interval_in_ms: 600000
+dynamic_snitch_badness_threshold: 0.1
+server_encryption_options:
+    internode_encryption: none
+    keystore: resources/dse/conf/.keystore
+    keystore_password: cassandra
+    truststore: resources/dse/conf/.truststore
+    truststore_password: cassandra
+
+# enable or disable client/server encryption.
+client_encryption_options:
+    enabled: false
+    # If enabled and optional is set to true, encrypted and unencrypted connections over native transport are handled.
+    optional: false
+    keystore: resources/dse/conf/.keystore
+    keystore_password: cassandra
+
+internode_compression: dc
+inter_dc_tcp_nodelay: false
+tracetype_query_ttl: 86400
+tracetype_repair_ttl: 604800
+windows_timer_interval: 1
+enable_user_defined_functions: false
+enable_scripted_user_defined_functions: false
+enable_user_defined_functions_threads: true
+user_defined_function_warn_micros: 500
+user_defined_function_fail_micros: 10000
+user_defined_function_warn_heap_mb: 200
+user_defined_function_fail_heap_mb: 500
+
+user_function_timeout_policy: die
+transparent_data_encryption_options:
+    enabled: false
+    chunk_length_kb: 64
+    cipher: AES/CBC/PKCS5Padding
+    key_alias: testing:1
+    # CBC IV length for AES must be 16 bytes, the default size
+    # iv_length: 16
+    key_provider:
+      - class_name: org.apache.cassandra.security.JKSKeyProvider
+        parameters:
+          - keystore: conf/.keystore
+            keystore_password: cassandra
+            store_type: JCEKS
+            key_password: cassandra
+
+
+#####################
+# SAFETY THRESHOLDS #
+#####################
+
+tombstone_warn_threshold: 1000
+tombstone_failure_threshold: 100000
+
+# Log WARN on any multiple-partition batch size that exceeds this value. 64kb per batch by default.
+# Use caution when increasing the size of this threshold as it can lead to node instability.
+batch_size_warn_threshold_in_kb: 64
+
+# Fail any multiple-partition batch that exceeds this value. The calcuated default is 640kb (10x warn threshold).
+batch_size_fail_threshold_in_kb: 640
+unlogged_batch_across_partitions_warn_threshold: 10
+
+compaction_large_partition_warning_threshold_mb: 100
+
+back_pressure_enabled: false
+back_pressure_strategy:
+    - class_name: org.apache.cassandra.net.RateBasedBackPressure
+      parameters:
+        - high_ratio: 0.90
+          factor: 5
+          flow: FAST
+
+continuous_paging:
+    # The maximum number of concurrent sessions, any additional session will be rejected with an unavailable error.
+    max_concurrent_sessions: 60
+    # The maximum number of pages that can be buffered for each session
+    max_session_pages: 4
+    # The maximum size of a page, in MB. If an individual CQL row is larger than this value, the page can be larger than
+    # this value.
+    max_page_size_mb: 8
+    # The maximum time in milliseconds for which a local continuous query will run, assuming the client continues
+    # reading or requesting pages. When this threshold is exceeded, the session is swapped out and rescheduled.
+    # Swapping and rescheduling resources ensures the release of resources including those that prevent the memtables
+    # from flushing. Adjust when high write workloads exist on tables that have
+    # continuous paging requests.
+    max_local_query_time_ms: 5000
+    # The maximum time the server will wait for a client to request more pages, in seconds, assuming the
+    # server queue is full or the client has not required any more pages via a backpressure update request.
+    # Increase this value for extremely large page sizes (max_page_size_mb)
+    # or for extremely slow networks.
+    client_timeout_sec: 600
+    # How long the server waits for a cancel request to complete, in seconds.
+    cancel_timeout_sec: 5
+    # How long the server will wait, in milliseconds, before checking if a continuous paging session can be resumed when
+    # the session is paused because of backpressure.
+    paused_check_interval_ms: 1
+
+nodesync:
+    # The (maximum) rate (in kilobytes per second) for data validation.
+    rate_in_kb: 1024
