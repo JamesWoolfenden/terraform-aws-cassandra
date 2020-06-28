@@ -47,7 +47,7 @@ repos:
         language: python
         types: [file, yaml]
   - repo: git://github.com/jameswoolfenden/pre-commit
-    rev: v0.1.28
+    rev: v0.1.33
     hooks:
       - id: terraform-fmt
       - id: checkov-scan
