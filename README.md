@@ -103,8 +103,6 @@ No requirements.
 | common\_tags | Implements the common tags scheme | `map(string)` | n/a | yes |
 | config-file | n/a | `string` | `"/etc/dse/cassandra/cassandra.yaml"` | no |
 | instance\_type | aws instance type and class | `string` | n/a | yes |
-| max\_size | Maximum number of instances | `number` | `3` | no |
-| min\_size | Minimum number of instances | `number` | `3` | no |
 | private\_ips | List of ips for the cassandra nodes | `list` | n/a | yes |
 | ssh-inbound-range | CIDRs of address that are allowed to ssh in. | `list` | <pre>[<br>  "0.0.0.0/0"<br>]</pre> | no |
 | subnet\_ids | List of subnet Ids | `list` | n/a | yes |

@@ -27,19 +27,6 @@ variable "subnet_ids" {
 }
 
 
-variable "min_size" {
-  description = "Minimum number of instances"
-  type        = number
-  default     = 3
-}
-
-variable "max_size" {
-  description = "Maximum number of instances"
-  type        = number
-  default     = 3
-}
-
-
 variable "template-file" {
   default = "cassandra.tmpl"
 }

@@ -9,8 +9,6 @@ module "cassandra" {
   }
   allowed_ranges    = [module.myip.cidr]
   ssh-inbound-range = [module.myip.cidr]
-  max_size          = 1
-  min_size          = 1
   ami               = var.ami
 }
 
