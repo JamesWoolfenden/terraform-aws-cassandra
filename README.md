@@ -6,7 +6,7 @@
 [![Build Status](https://github.com/JamesWoolfenden/terraform-aws-cassandra/workflows/Verify%20and%20Bump/badge.svg?branch=master)](https://github.com/JamesWoolfenden/terraform-aws-cassandra)
 [![Latest Release](https://img.shields.io/github/release/JamesWoolfenden/terraform-aws-cassandra.svg)](https://github.com/JamesWoolfenden/terraform-aws-cassandra/releases/latest)
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit)
-[![pre-commit](https://img.shields.io/badge/checkov-verified-brightgreen)](https://www.checkov.io/)
+[![checkov](https://img.shields.io/badge/checkov-verified-brightgreen)](https://www.checkov.io/)
 
 A project to set up infrastructure in AWS for an Apache Cassandra cluster, thia module will create Cassandra on Ec2 and autocluster the nodes.
 
@@ -84,6 +84,10 @@ terraform apply
 ```
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+## Requirements
+
+No requirements.
+
 ## Providers
 
 | Name | Version |
@@ -93,7 +97,7 @@ terraform apply
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:-----:|
+|------|-------------|------|---------|:--------:|
 | allowed\_ranges | Allowed ranges that can access the cluster | `list` | <pre>[<br>  "0.0.0.0/0"<br>]</pre> | no |
 | ami | Contains information to select desired AMI | `map` | n/a | yes |
 | common\_tags | Implements the common tags scheme | `map(string)` | n/a | yes |
