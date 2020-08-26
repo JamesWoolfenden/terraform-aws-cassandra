@@ -28,21 +28,31 @@ variable "subnet_ids" {
 
 
 variable "template-file" {
+  type    = string
   default = "cassandra.tmpl"
 }
 
 variable "config-file" {
+  type    = string
   default = "/etc/dse/cassandra/cassandra.yaml"
 }
 
 variable "ami" {
-  type        = map
+  type        = string
   description = "Contains information to select desired AMI"
+  validation {
+    condition     = length(var.ami_id) > 21 && substr(var.ami_id, 0, 4) == "ami-"
+    error_message = "The AMI ids need to start with ami- and is 21 characters."
+  }
 }
 
-
 variable "vpc_id" {
-  type = string
+  description = "The id for the vpc"
+  type        = string
+  validation {
+    condition     = length(var.vpc_id) > 12 && substr(var.vpc_id, 0, 4) == "vpc-"
+    error_message = "The AMI ids need to start with ami- and is at least 12 characters."
+  }
 }
 
 variable "private_ips" {

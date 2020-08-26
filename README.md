@@ -99,7 +99,7 @@ No requirements.
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | allowed\_ranges | Allowed ranges that can access the cluster | `list` | <pre>[<br>  "0.0.0.0/0"<br>]</pre> | no |
-| ami | Contains information to select desired AMI | `map` | n/a | yes |
+| ami | Contains information to select desired AMI | `string` | n/a | yes |
 | common\_tags | Implements the common tags scheme | `map(string)` | n/a | yes |
 | config-file | n/a | `string` | `"/etc/dse/cassandra/cassandra.yaml"` | no |
 | instance\_type | aws instance type and class | `string` | n/a | yes |
@@ -107,7 +107,7 @@ No requirements.
 | ssh-inbound-range | CIDRs of address that are allowed to ssh in. | `list` | <pre>[<br>  "0.0.0.0/0"<br>]</pre> | no |
 | subnet\_ids | List of subnet Ids | `list` | n/a | yes |
 | template-file | n/a | `string` | `"cassandra.tmpl"` | no |
-| vpc\_id | n/a | `string` | n/a | yes |
+| vpc\_id | The id for the vpc | `string` | n/a | yes |
 
 ## Outputs
 
