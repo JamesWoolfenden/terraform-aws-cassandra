@@ -41,7 +41,7 @@ variable "ami" {
   type        = string
   description = "Contains information to select desired AMI"
   validation {
-    condition     = length(var.ami_id) > 21 && substr(var.ami_id, 0, 4) == "ami-"
+    condition     = length(var.ami) > 21 && substr(var.ami, 0, 4) == "ami-"
     error_message = "The AMI ids need to start with ami- and is 21 characters."
   }
 }
