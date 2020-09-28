@@ -26,7 +26,6 @@ variable "subnet_ids" {
   type        = list
 }
 
-
 variable "template-file" {
   type    = string
   default = "cassandra.tmpl"
@@ -38,12 +37,7 @@ variable "config-file" {
 }
 
 variable "ami" {
-  type        = string
   description = "Contains information to select desired AMI"
-  validation {
-    condition     = length(var.ami) > 21 && substr(var.ami, 0, 4) == "ami-"
-    error_message = "The AMI ids need to start with ami- and is 21 characters."
-  }
 }
 
 variable "vpc_id" {

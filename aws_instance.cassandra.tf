@@ -30,5 +30,9 @@ systemctl enable cassandra
 service cassandra start
 HERE
 
+  metadata_options {
+    http_tokens = "required"
+  }
+
   tags = var.common_tags
 }
