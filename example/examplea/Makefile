@@ -37,7 +37,7 @@ docs:
 	terraform-docs md . > README.md
 
 valid:
-	terraform fmt -check=true -diff=true
+	terraform fmt
 	checkov -d . --external-checks-dir ../../checkov
 
 target:

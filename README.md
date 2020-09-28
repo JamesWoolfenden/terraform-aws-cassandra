@@ -1,6 +1,3 @@
-
-[![Slalom][logo]](https://slalom.com)
-
 # terraform-aws-cassandra
 
 [![Build Status](https://github.com/JamesWoolfenden/terraform-aws-cassandra/workflows/Verify%20and%20Bump/badge.svg?branch=master)](https://github.com/JamesWoolfenden/terraform-aws-cassandra)
@@ -54,7 +51,7 @@ If you want to test the modules usage execute Terraform in the examplea folder:
 
 ```cli
 cd example/examplea
-✔ /mnt/c/code/slalom/aws/terraform-aws-cassandra/example/examplea [master|✚ 1⚑ 1]
+✔ /mnt/c/code/jimw/aws/terraform-aws-cassandra/example/examplea [master|✚ 1⚑ 1]
 09:56 $ make init
 rm -rf .terraform/
 terraform init -reconfigure
@@ -84,6 +81,7 @@ terraform apply
 ```
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+
 ## Requirements
 
 No requirements.
@@ -91,30 +89,30 @@ No requirements.
 ## Providers
 
 | Name | Version |
-|------|---------|
-| aws | n/a |
+| ---- | ------- |
+| aws  | n/a     |
 
 ## Inputs
 
-| Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:--------:|
-| allowed\_ranges | Allowed ranges that can access the cluster | `list` | <pre>[<br>  "0.0.0.0/0"<br>]</pre> | no |
-| ami | Contains information to select desired AMI | `string` | n/a | yes |
-| common\_tags | Implements the common tags scheme | `map(string)` | n/a | yes |
-| config-file | n/a | `string` | `"/etc/dse/cassandra/cassandra.yaml"` | no |
-| instance\_type | aws instance type and class | `string` | n/a | yes |
-| private\_ips | List of ips for the cassandra nodes | `list` | n/a | yes |
-| ssh-inbound-range | CIDRs of address that are allowed to ssh in. | `list` | <pre>[<br>  "0.0.0.0/0"<br>]</pre> | no |
-| subnet\_ids | List of subnet Ids | `list` | n/a | yes |
-| template-file | n/a | `string` | `"cassandra.tmpl"` | no |
-| vpc\_id | The id for the vpc | `string` | n/a | yes |
+| Name              | Description                                  | Type          | Default                               | Required |
+| ----------------- | -------------------------------------------- | ------------- | ------------------------------------- | :------: |
+| allowed_ranges    | Allowed ranges that can access the cluster   | `list`        | <pre>[<br> "0.0.0.0/0"<br>]</pre>     |    no    |
+| ami               | Contains information to select desired AMI   | `string`      | n/a                                   |   yes    |
+| common_tags       | Implements the common tags scheme            | `map(string)` | n/a                                   |   yes    |
+| config-file       | n/a                                          | `string`      | `"/etc/dse/cassandra/cassandra.yaml"` |    no    |
+| instance_type     | aws instance type and class                  | `string`      | n/a                                   |   yes    |
+| private_ips       | List of ips for the cassandra nodes          | `list`        | n/a                                   |   yes    |
+| ssh-inbound-range | CIDRs of address that are allowed to ssh in. | `list`        | <pre>[<br> "0.0.0.0/0"<br>]</pre>     |    no    |
+| subnet_ids        | List of subnet Ids                           | `list`        | n/a                                   |   yes    |
+| template-file     | n/a                                          | `string`      | `"cassandra.tmpl"`                    |    no    |
+| vpc_id            | The id for the vpc                           | `string`      | n/a                                   |   yes    |
 
 ## Outputs
 
-| Name | Description |
-|------|-------------|
-| instances | n/a |
-| security\_group | n/a |
+| Name           | Description |
+| -------------- | ----------- |
+| instances      | n/a         |
+| security_group | n/a         |
 
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 
@@ -138,7 +136,7 @@ Please use the [issue tracker](https://github.com/jameswoolfenden/terraform-aws-
 
 ## Copyrights
 
-Copyright © 2019-2020 [Slalom, LLC](https://slalom.com)
+Copyright © 2019-2020 James Woolfenden
 
 ## License
 
@@ -147,19 +145,19 @@ Copyright © 2019-2020 [Slalom, LLC](https://slalom.com)
 See [LICENSE](LICENSE) for full details.
 
 Licensed to the Apache Software Foundation (ASF) under one
-or more contributor license agreements.  See the NOTICE file
+or more contributor license agreements. See the NOTICE file
 distributed with this work for additional information
-regarding copyright ownership.  The ASF licenses this file
+regarding copyright ownership. The ASF licenses this file
 to you under the Apache License, Version 2.0 (the
 "License"); you may not use this file except in compliance
-with the License.  You may obtain a copy of the License at
+with the License. You may obtain a copy of the License at
 
 <https://www.apache.org/licenses/LICENSE-2.0>
 
 Unless required by applicable law or agreed to in writing,
 software distributed under the License is distributed on an
 "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-KIND, either express or implied.  See the License for the
+KIND, either express or implied. See the License for the
 specific language governing permissions and limitations
 under the License.
 
@@ -169,12 +167,9 @@ under the License.
 
 [jameswoolfenden_homepage]: https://github.com/jameswoolfenden
 [jameswoolfenden_avatar]: https://github.com/jameswoolfenden.png?size=150
-[logo]: https://gist.githubusercontent.com/JamesWoolfenden/5c457434351e9fe732ca22b78fdd7d5e/raw/15933294ae2b00f5dba6557d2be88f4b4da21201/slalom-logo.png
-[website]: https://slalom.com
 [github]: https://github.com/jameswoolfenden
 [linkedin]: https://www.linkedin.com/in/jameswoolfenden/
 [twitter]: https://twitter.com/JimWoolfenden
-
 [share_twitter]: https://twitter.com/intent/tweet/?text=terraform-aws-cassandra&url=https://github.com/jameswoolfenden/terraform-aws-cassandra
 [share_linkedin]: https://www.linkedin.com/shareArticle?mini=true&title=terraform-aws-cassandra&url=https://github.com/jameswoolfenden/terraform-aws-cassandra
 [share_reddit]: https://reddit.com/submit/?url=https://github.com/jameswoolfenden/terraform-aws-cassandra
