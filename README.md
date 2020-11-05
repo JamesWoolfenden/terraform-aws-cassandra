@@ -5,7 +5,7 @@
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit)
 [![checkov](https://img.shields.io/badge/checkov-verified-brightgreen)](https://www.checkov.io/)
 
-A project to set up infrastructure in AWS for an Apache Cassandra cluster, thia module will create Cassandra on Ec2 and autocluster the nodes.
+A project to set up infrastructure in AWS for an Apache Cassandra cluster, this module will create Cassandra on Ec2 and autocluster the nodes.
 
 ---
 
