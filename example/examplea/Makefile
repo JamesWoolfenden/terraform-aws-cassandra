@@ -14,7 +14,7 @@ all: init plan build
 
 init:
 	$(RM)
-	terraform init -reconfigure
+	terraform init -reconfigure -upgrade
 
 plan:
 	terraform plan -refresh=true
@@ -46,4 +46,3 @@ target:
 
 purge:
 	$(BLAT)
-	terraform init -reconfigure

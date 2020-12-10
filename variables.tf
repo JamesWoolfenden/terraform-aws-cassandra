@@ -11,19 +11,19 @@ variable "common_tags" {
 
 variable "allowed_ranges" {
   description = "Allowed ranges that can access the cluster"
-  type        = list
+  type        = list(any)
   default     = ["0.0.0.0/0"]
 }
 
 variable "ssh-inbound-range" {
   description = "CIDRs of address that are allowed to ssh in."
-  type        = list
+  type        = list(any)
   default     = ["0.0.0.0/0"]
 }
 
 variable "subnet_ids" {
   description = "List of subnet Ids"
-  type        = list
+  type        = list(any)
 }
 
 variable "template-file" {
@@ -50,6 +50,6 @@ variable "vpc_id" {
 }
 
 variable "private_ips" {
-  type        = list
+  type        = list(any)
   description = "List of ips for the cassandra nodes"
 }

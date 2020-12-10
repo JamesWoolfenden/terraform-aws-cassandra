@@ -14,7 +14,7 @@ module "cassandra" {
 
 
 variable "ami" {
-  type        = map
+  type        = map(any)
   description = "Contains information to select desired AMI"
   default = {
     filter = ["amzn2-ami-hvm-*-x86_64-ebs"]

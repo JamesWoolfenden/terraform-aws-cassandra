@@ -31,10 +31,10 @@ As a minimum you must include a module reference in your own template Terraform 
 
 ```hcl
 module "cassandra" {
-  source        = "../../"
-  instance_type = var.instance_type
-  common_tags   = var.common_tags
-  subnet_ids    = data.aws_subnet_ids.subs.ids
+  source            = "JamesWoolfenden/cassandra/aws"
+  instance_type     = var.instance_type
+  common_tags       = var.common_tags
+  subnet_ids        = data.aws_subnet_ids.subs.ids
   #add the private ips
   private_ips       = []
   allowed_ranges    = [module.myip.cidr]
@@ -95,14 +95,14 @@ No requirements.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| allowed\_ranges | Allowed ranges that can access the cluster | `list` | <pre>[<br>  "0.0.0.0/0"<br>]</pre> | no |
+| allowed\_ranges | Allowed ranges that can access the cluster | `list(any)` | <pre>[<br>  "0.0.0.0/0"<br>]</pre> | no |
 | ami | Contains information to select desired AMI | `any` | n/a | yes |
 | common\_tags | Implements the common tags scheme | `map(string)` | n/a | yes |
 | config-file | n/a | `string` | `"/etc/dse/cassandra/cassandra.yaml"` | no |
 | instance\_type | aws instance type and class | `string` | n/a | yes |
-| private\_ips | List of ips for the cassandra nodes | `list` | n/a | yes |
-| ssh-inbound-range | CIDRs of address that are allowed to ssh in. | `list` | <pre>[<br>  "0.0.0.0/0"<br>]</pre> | no |
-| subnet\_ids | List of subnet Ids | `list` | n/a | yes |
+| private\_ips | List of ips for the cassandra nodes | `list(any)` | n/a | yes |
+| ssh-inbound-range | CIDRs of address that are allowed to ssh in. | `list(any)` | <pre>[<br>  "0.0.0.0/0"<br>]</pre> | no |
+| subnet\_ids | List of subnet Ids | `list(any)` | n/a | yes |
 | template-file | n/a | `string` | `"cassandra.tmpl"` | no |
 | vpc\_id | The id for the vpc | `string` | n/a | yes |
 

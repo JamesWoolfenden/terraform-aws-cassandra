@@ -4,7 +4,7 @@ default_language_version:
   python: python3
 repos:
   - repo: git://github.com/pre-commit/pre-commit-hooks
-    rev: v3.2.0
+    rev: v3.3.0
     hooks:
       - id: check-json
       - id: check-merge-conflict
@@ -21,24 +21,18 @@ repos:
     rev: v1.1.9
     hooks:
       - id: forbid-tabs
-        exclude_types:
-          - python
-          - javascript
-          - dtd
-          - markdown
-          - makefile
-          - xml
+        exclude_types: [python, javascript, dtd, markdown, makefile, xml]
         exclude: binary|\.bin$
   - repo: git://github.com/jameswoolfenden/pre-commit-shell
     rev: 0.0.2
     hooks:
       - id: shell-lint
   - repo: git://github.com/igorshubovych/markdownlint-cli
-    rev: v0.23.2
+    rev: v0.25.0
     hooks:
       - id: markdownlint
   - repo: git://github.com/adrienverge/yamllint
-    rev: v1.24.2
+    rev: v1.25.0
     hooks:
       - id: yamllint
         name: yamllint
@@ -50,6 +44,7 @@ repos:
     rev: v0.1.33
     hooks:
       - id: terraform-fmt
+        language_version: python3.8
       - id: checkov-scan
         language_version: python3.8
       - id: tf2docs

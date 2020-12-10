@@ -9,11 +9,11 @@ variable "instance_type" {
 }
 
 variable "common_tags" {
-  type = map
+  type = map(any)
 }
 
 variable "private_ips" {
-  type = list
+  type = list(any)
 }
 
 
