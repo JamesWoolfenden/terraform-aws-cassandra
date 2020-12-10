@@ -101,7 +101,7 @@ No requirements.
 | config-file | n/a | `string` | `"/etc/dse/cassandra/cassandra.yaml"` | no |
 | instance\_type | aws instance type and class | `string` | n/a | yes |
 | private\_ips | List of ips for the cassandra nodes | `list(any)` | n/a | yes |
-| ssh-inbound-range | CIDRs of address that are allowed to ssh in. | `list(any)` | <pre>[<br>  "0.0.0.0/0"<br>]</pre> | no |
+| ssh-inbound-range | CIDRs of address that are allowed to ssh in. | `list(any)` | n/a | yes |
 | subnet\_ids | List of subnet Ids | `list(any)` | n/a | yes |
 | template-file | n/a | `string` | `"cassandra.tmpl"` | no |
 | vpc\_id | The id for the vpc | `string` | n/a | yes |

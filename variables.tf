@@ -18,7 +18,6 @@ variable "allowed_ranges" {
 variable "ssh-inbound-range" {
   description = "CIDRs of address that are allowed to ssh in."
   type        = list(any)
-  default     = ["0.0.0.0/0"]
 }
 
 variable "subnet_ids" {
