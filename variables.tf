@@ -36,7 +36,6 @@ variable "config-file" {
 }
 
 variable "ami" {
-  type        = string
   description = "Contains information to select desired AWS AMI"
 }
 
