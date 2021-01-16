@@ -36,7 +36,8 @@ variable "config-file" {
 }
 
 variable "ami" {
-  description = "Contains information to select desired AMI"
+  type        = string
+  description = "Contains information to select desired AWS AMI"
 }
 
 variable "vpc_id" {

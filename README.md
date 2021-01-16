@@ -4,8 +4,11 @@
 [![Latest Release](https://img.shields.io/github/release/JamesWoolfenden/terraform-aws-cassandra.svg)](https://github.com/JamesWoolfenden/terraform-aws-cassandra/releases/latest)
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit)
 [![checkov](https://img.shields.io/badge/checkov-verified-brightgreen)](https://www.checkov.io/)
+[![Infrastructure Tests](https://www.bridgecrew.cloud/badges/github/jameswoolfenden/terraform-aws-cassandra/general)](https://www.bridgecrew.cloud/link/badge?vcs=github&fullRepo=JamesWoolfenden%2Fterraform-aws-cassandra&benchmark=INFRASTRUCTURE+SECURITY)
+[![Infrastructure Tests](https://www.bridgecrew.cloud/badges/github/jameswoolfenden/terraform-aws-cassandra/cis_aws)](https://www.bridgecrew.cloud/link/badge?vcs=github&fullRepo=JamesWoolfenden%2Fterraform-aws-cassandra&benchmark=CIS+AWS+V1.2)
+[![Infrastructure Tests](https://www.bridgecrew.cloud/badges/github/jameswoolfenden/terraform-aws-cassandra/pci)](https://www.bridgecrew.cloud/link/badge?vcs=github&fullRepo=JamesWoolfenden%2Fterraform-aws-cassandra&benchmark=PCI-DSS+V3.2)
 
-A project to set up infrastructure in AWS for an Apache Cassandra cluster, this module will create Cassandra on Ec2 and autocluster the nodes.
+A project to set up infrastructure in AWS for an Apache Cassandra cluster. This module will create Cassandra on EC2 and auto-cluster all of its nodes.
 
 ---
 
@@ -32,6 +35,7 @@ As a minimum you must include a module reference in your own template Terraform 
 ```hcl
 module "cassandra" {
   source            = "JamesWoolfenden/cassandra/aws"
+  version           = "0.3.1"
   instance_type     = var.instance_type
   common_tags       = var.common_tags
   subnet_ids        = data.aws_subnet_ids.subs.ids
@@ -96,7 +100,7 @@ No requirements.
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | allowed\_ranges | Allowed ranges that can access the cluster | `list(any)` | <pre>[<br>  "0.0.0.0/0"<br>]</pre> | no |
-| ami | Contains information to select desired AMI | `any` | n/a | yes |
+| ami | Contains information to select desired AWS AMI | `string` | n/a | yes |
 | common\_tags | Implements the common tags scheme | `map(string)` | n/a | yes |
 | config-file | n/a | `string` | `"/etc/dse/cassandra/cassandra.yaml"` | no |
 | instance\_type | aws instance type and class | `string` | n/a | yes |
