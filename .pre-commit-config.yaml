@@ -16,6 +16,8 @@ repos:
         args:
           - --autofix
       - id: detect-aws-credentials
+        args:
+          - --allow-missing-credentials
       - id: detect-private-key
   - repo: git://github.com/Lucas-C/pre-commit-hooks
     rev: v1.1.9
@@ -32,7 +34,7 @@ repos:
     hooks:
       - id: markdownlint
   - repo: git://github.com/adrienverge/yamllint
-    rev: v1.25.0
+    rev: v1.26.0
     hooks:
       - id: yamllint
         name: yamllint
@@ -45,7 +47,11 @@ repos:
     hooks:
       - id: terraform-fmt
         language_version: python3.8
-      - id: checkov-scan
-        language_version: python3.8
       - id: tf2docs
         language_version: python3.8
+  - repo: git://github.com/bridgecrewio/checkov
+    rev: 1.0.765
+    hooks:
+      - id: checkov
+        verbose: true
+        entry: checkov -d example/examplea

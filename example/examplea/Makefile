@@ -1,6 +1,7 @@
 # Makefile
 ifdef OS
    BLAT = $(powershell  -noprofile rm .\.terraform\ -force -recurse)
+   RM = $(powershell  -noprofile rm .\.terraform\ -force -recurse)
 else
    ifeq ($(shell uname), Linux)
       RM  = rm .terraform/modules/ -fr
@@ -37,7 +38,7 @@ docs:
 	terraform-docs md . > README.md
 
 valid:
-	terraform fmt
+	terraform fmt -recursive
 	checkov -d . --external-checks-dir ../../checkov
 
 target:
