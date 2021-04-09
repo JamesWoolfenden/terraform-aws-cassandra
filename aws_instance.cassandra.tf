@@ -4,6 +4,8 @@ resource "aws_instance" "cassandra" {
   instance_type = var.instance_type
   monitoring    = true
   private_ip    = var.private_ips[count.index]
+  ebs_optimized = true
+
   root_block_device {
     volume_type           = "standard"
     volume_size           = 100
