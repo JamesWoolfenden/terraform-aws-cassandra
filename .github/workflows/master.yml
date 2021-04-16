@@ -9,7 +9,7 @@ on:
     branches:
       - master
 env:
-  terraform: 0.14.8
+  terraform: 0.15.0
   tf_target_dir: example/examplea
   branch: master
 jobs:
@@ -46,7 +46,7 @@ jobs:
           python-version: 3.8
       - run: |
           pip3 install lastversion
-          now=$(lastversion terraform-docs)
+          now=$(lastversion terraform-docs/terraform-docs)
           mkdir $GITHUB_WORKSPACE/bin
           curl -Lo $GITHUB_WORKSPACE/bin/terraform-docs https://github.com/terraform-docs/terraform-docs/releases/download/v${now}/terraform-docs-v${now}-$(uname)-amd64
           chmod +x $GITHUB_WORKSPACE/bin/terraform-docs
