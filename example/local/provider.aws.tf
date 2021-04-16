@@ -1,7 +1,9 @@
 provider "aws" {
-  region                      = "eu-west-1"
-  version                     = "~>2.64"
-  access_key                  = "mock_access_key"
+  region  = "eu-west-1"
+  version = "~>2.64"
+  # tfsec:ignore:AWS044
+  access_key = "mock_access_key"
+  # tfsec:ignore:GEN003
   secret_key                  = "mock_secret_key"
   s3_force_path_style         = true
   skip_credentials_validation = true

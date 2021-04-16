@@ -89,6 +89,7 @@ resource "aws_security_group" "cassandra" {
     to_port     = 0
     protocol    = "-1"
     description = "Allow outbound"
+    # tfsec:ignore:AWS009
     cidr_blocks = ["0.0.0.0/0"]
   }
 
