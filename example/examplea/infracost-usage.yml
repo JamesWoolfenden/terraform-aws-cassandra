@@ -1,2 +1,23 @@
 version: 0.1
-resource_usage: {}
+resource_usage:
+  module.cassandra.aws_instance.cassandra[0]:
+    monthly_cpu_credit_hrs: 0
+    operating_system: linux
+    reserved_instance_payment_option: all_upfront
+    reserved_instance_term: 1_year
+    reserved_instance_type: standard
+    vcpu_count: 0
+  module.cassandra.aws_instance.cassandra[1]:
+    monthly_cpu_credit_hrs: 0
+    operating_system: linux
+    reserved_instance_payment_option: all_upfront
+    reserved_instance_term: 1_year
+    reserved_instance_type: standard
+    vcpu_count: 0
+  module.cassandra.aws_instance.cassandra[2]:
+    monthly_cpu_credit_hrs: 0
+    operating_system: linux
+    reserved_instance_payment_option: all_upfront
+    reserved_instance_term: 1_year
+    reserved_instance_type: standard
+    vcpu_count: 0

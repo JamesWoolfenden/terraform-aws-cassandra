@@ -83,6 +83,42 @@ terraform apply
 ....
 ```
 
+## Costs
+
+```text
+monthly cost estimate
+
+Project: .
+
+ Name                                                   Monthly Qty  Unit            Monthly Cost
+
+ module.cassandra.aws_instance.cassandra[0]
+ ├─ Instance usage (Linux/UNIX, on-demand, t3.micro)            730  hours                  $8.61
+ ├─ EC2 detailed monitoring                                       7  metrics                $2.10
+ ├─ CPU credits                                                   0  vCPU-hours             $0.00
+ └─ root_block_device
+    ├─ Storage (magnetic)                                       100  GB-months              $5.80
+    └─ I/O requests                                   Cost depends on usage: $0.06 per 1M request
+
+ module.cassandra.aws_instance.cassandra[1]
+ ├─ Instance usage (Linux/UNIX, on-demand, t3.micro)            730  hours                  $8.61
+ ├─ EC2 detailed monitoring                                       7  metrics                $2.10
+ ├─ CPU credits                                                   0  vCPU-hours             $0.00
+ └─ root_block_device
+    ├─ Storage (magnetic)                                       100  GB-months              $5.80
+    └─ I/O requests                                   Cost depends on usage: $0.06 per 1M request
+
+ module.cassandra.aws_instance.cassandra[2]
+ ├─ Instance usage (Linux/UNIX, on-demand, t3.micro)            730  hours                  $8.61
+ ├─ EC2 detailed monitoring                                       7  metrics                $2.10
+ ├─ CPU credits                                                   0  vCPU-hours             $0.00
+ └─ root_block_device
+    ├─ Storage (magnetic)                                       100  GB-months              $5.80
+    └─ I/O requests                                   Cost depends on usage: $0.06 per 1M request
+
+ PROJECT TOTAL                                                                             $49.54
+```
+
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Requirements
 
