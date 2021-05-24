@@ -39,8 +39,8 @@ variable "vpc_id" {
   description = "The id for the vpc"
   type        = string
   validation {
-    condition     = length(var.vpc_id) > 12 && substr(var.vpc_id, 0, 4) == "vpc-"
-    error_message = "The AMI ids need to start with ami- and is at least 12 characters."
+    condition     = length(var.vpc_id) >= 12 && substr(var.vpc_id, 0, 4) == "vpc-"
+    error_message = "The VPC ids need to start with vpc- and is at least 12 characters."
   }
 }
 
