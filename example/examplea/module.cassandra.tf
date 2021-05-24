@@ -3,7 +3,7 @@ module "cassandra" {
   instance_type = "t3.micro"
   subnet_ids    = data.aws_subnet_ids.subs.ids
   #add the private ips
-  private_ips       = []
+  private_ips       = local.private_ips
   allowed_ranges    = [module.myip.cidr]
   ssh-inbound-range = [module.myip.cidr]
   ami               = local.ami
@@ -14,4 +14,8 @@ module "cassandra" {
 module "myip" {
   source  = "jameswoolfenden/ip/http"
   version = "0.2.7"
+}
+
+locals {
+  private_ips = [cidrhost(data.aws_subnet.a.cidr_block, 14), cidrhost(data.aws_subnet.a.cidr_block, 15), cidrhost(data.aws_subnet.a.cidr_block, 16)]
 }
