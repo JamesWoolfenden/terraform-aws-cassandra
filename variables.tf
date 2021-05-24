@@ -4,10 +4,6 @@ variable "instance_type" {
   type        = string
 }
 
-variable "common_tags" {
-  description = "Implements the common tags scheme"
-  type        = map(string)
-}
 
 variable "allowed_ranges" {
   description = "Allowed ranges that can access the cluster"

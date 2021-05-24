@@ -2,8 +2,6 @@ resource "aws_security_group" "cassandra" {
   name        = "Cassandra"
   description = "Terraform Cassandra security group"
 
-  tags = var.common_tags
-
   ingress {
     from_port   = 22
     to_port     = 22

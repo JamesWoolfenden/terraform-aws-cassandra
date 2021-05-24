@@ -37,7 +37,6 @@ module "cassandra" {
   source            = "JamesWoolfenden/cassandra/aws"
   version           = "0.3.1"
   instance_type     = var.instance_type
-  common_tags       = var.common_tags
   subnet_ids        = data.aws_subnet_ids.subs.ids
   #add the private ips
   private_ips       = []
@@ -113,7 +112,6 @@ No modules.
 |------|-------------|------|---------|:--------:|
 | <a name="input_allowed_ranges"></a> [allowed\_ranges](#input\_allowed\_ranges) | Allowed ranges that can access the cluster | `list(any)` | <pre>[<br>  "0.0.0.0/0"<br>]</pre> | no |
 | <a name="input_ami"></a> [ami](#input\_ami) | Contains information to select desired AWS AMI | `any` | n/a | yes |
-| <a name="input_common_tags"></a> [common\_tags](#input\_common\_tags) | Implements the common tags scheme | `map(string)` | n/a | yes |
 | <a name="input_config-file"></a> [config-file](#input\_config-file) | n/a | `string` | `"/etc/dse/cassandra/cassandra.yaml"` | no |
 | <a name="input_instance_type"></a> [instance\_type](#input\_instance\_type) | aws instance type and class | `string` | n/a | yes |
 | <a name="input_private_ips"></a> [private\_ips](#input\_private\_ips) | List of ips for the cassandra nodes | `list(any)` | n/a | yes |

@@ -8,10 +8,6 @@ variable "instance_type" {
   description = "AWS instance type"
 }
 
-variable "common_tags" {
-  type = map(any)
-}
-
 variable "private_ips" {
   type = list(any)
 }

@@ -1,7 +1,6 @@
 module "cassandra" {
   source        = "../../"
-  instance_type = var.instance_type
-  common_tags   = var.common_tags
+  instance_type = "t3.micro"
   subnet_ids    = data.aws_subnet_ids.subs.ids
   #add the private ips
   private_ips       = []

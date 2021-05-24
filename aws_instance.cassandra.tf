@@ -1,4 +1,5 @@
 resource "aws_instance" "cassandra" {
+  # checkov:skip=CKV2_AWS_17: invalid check
   count         = length(var.private_ips)
   ami           = data.aws_ami.ami.id
   instance_type = var.instance_type
@@ -36,5 +37,4 @@ HERE
     http_tokens = "required"
   }
 
-  tags = var.common_tags
 }

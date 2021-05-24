@@ -4,8 +4,7 @@ sources=[
   ]
 
   provisioner "shell" {
-     scripts=[
-       "{{ template_dir }}install-cassandra.sh"
-       ]
+     script="${path.root}/install-cassandra.sh"
+  timeout      = "10s"
     }
 }
