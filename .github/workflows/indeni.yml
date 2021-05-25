@@ -21,11 +21,12 @@ jobs:
           terraform_version: v0.14.8
       - run: terraform init
         working-directory: ${{ env.tf_target_dir }}
-      - run: terraform plan -out=plan.out
+      - name: tf plan
+        run: terraform plan -out=plan.out
         working-directory: ${{ env.tf_target_dir }}
         env:
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_KEY }}
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       - run: stat plan.out
         working-directory: ${{ env.tf_target_dir }}
       - name: Indeni IAC
