@@ -32,7 +32,7 @@ jobs:
       - name: Indeni IAC
         uses: indeni/cloudrail-run-ga@v1.1
         with:
-          tf-plan-file: lan.out
+          tf-plan-file: plan.out
           cloudrail-api-key: ${{ secrets.CLOUDRAIL_API_KEY }}
           cloud-account-id: 680235478471
           working-directory: ${{ env.tf_target_dir }}
