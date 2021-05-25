@@ -15,5 +15,5 @@ terraform {
       source  = "hashicorp/http"
     }
   }
-  required_version = ">=0.14.8"
+  required_version = ">=0.14.6"
 }
