@@ -32,9 +32,10 @@ jobs:
       - name: Indeni IAC
         uses: indeni/cloudrail-run-ga@v1.1
         with:
-          tf-plan-file: ${{ env.tf_target_dir }}/plan.out
+          tf-plan-file: lan.out
           cloudrail-api-key: ${{ secrets.CLOUDRAIL_API_KEY }}
           cloud-account-id: 680235478471
+          working-directory: ${{ env.tf_target_dir }}
       - name: Upload SARIF file
         uses: github/codeql-action/upload-sarif@v1
         if: always()
