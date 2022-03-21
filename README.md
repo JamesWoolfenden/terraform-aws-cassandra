@@ -120,16 +120,15 @@ Project: .
 ```
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
-
 ## Requirements
 
 No requirements.
 
 ## Providers
 
-| Name                                             | Version |
-| ------------------------------------------------ | ------- |
-| <a name="provider_aws"></a> [aws](#provider_aws) | n/a     |
+| Name | Version |
+|------|---------|
+| <a name="provider_aws"></a> [aws](#provider\_aws) | n/a |
 
 ## Modules
 
@@ -137,33 +136,32 @@ No modules.
 
 ## Resources
 
-| Name                                                                                                                       | Type        |
-| -------------------------------------------------------------------------------------------------------------------------- | ----------- |
-| [aws_instance.cassandra](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/instance)             | resource    |
-| [aws_security_group.cassandra](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group) | resource    |
-| [aws_ami.ami](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ami)                          | data source |
+| Name | Type |
+|------|------|
+| [aws_instance.cassandra](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/instance) | resource |
+| [aws_security_group.cassandra](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group) | resource |
+| [aws_ami.ami](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ami) | data source |
 
 ## Inputs
 
-| Name                                                                                 | Description                                    | Type        | Default                               | Required |
-| ------------------------------------------------------------------------------------ | ---------------------------------------------- | ----------- | ------------------------------------- | :------: |
-| <a name="input_allowed_ranges"></a> [allowed_ranges](#input_allowed_ranges)          | Allowed ranges that can access the cluster     | `list(any)` | <pre>[<br> "0.0.0.0/0"<br>]</pre>     |    no    |
-| <a name="input_ami"></a> [ami](#input_ami)                                           | Contains information to select desired AWS AMI | `any`       | n/a                                   |   yes    |
-| <a name="input_config-file"></a> [config-file](#input_config-file)                   | n/a                                            | `string`    | `"/etc/dse/cassandra/cassandra.yaml"` |    no    |
-| <a name="input_instance_type"></a> [instance_type](#input_instance_type)             | aws instance type and class                    | `string`    | n/a                                   |   yes    |
-| <a name="input_private_ips"></a> [private_ips](#input_private_ips)                   | List of ips for the cassandra nodes            | `list(any)` | n/a                                   |   yes    |
-| <a name="input_ssh-inbound-range"></a> [ssh-inbound-range](#input_ssh-inbound-range) | CIDRs of address that are allowed to ssh in.   | `list(any)` | n/a                                   |   yes    |
-| <a name="input_subnet_ids"></a> [subnet_ids](#input_subnet_ids)                      | List of subnet Ids                             | `list(any)` | n/a                                   |   yes    |
-| <a name="input_template-file"></a> [template-file](#input_template-file)             | n/a                                            | `string`    | `"cassandra.tmpl"`                    |    no    |
-| <a name="input_vpc_id"></a> [vpc_id](#input_vpc_id)                                  | The id for the vpc                             | `string`    | n/a                                   |   yes    |
+| Name | Description | Type | Default | Required |
+|------|-------------|------|---------|:--------:|
+| <a name="input_allowed_ranges"></a> [allowed\_ranges](#input\_allowed\_ranges) | Allowed ranges that can access the cluster | `list(any)` | <pre>[<br>  "0.0.0.0/0"<br>]</pre> | no |
+| <a name="input_ami"></a> [ami](#input\_ami) | Contains information to select desired AWS AMI | `any` | n/a | yes |
+| <a name="input_config-file"></a> [config-file](#input\_config-file) | n/a | `string` | `"/etc/dse/cassandra/cassandra.yaml"` | no |
+| <a name="input_instance_type"></a> [instance\_type](#input\_instance\_type) | aws instance type and class | `string` | n/a | yes |
+| <a name="input_private_ips"></a> [private\_ips](#input\_private\_ips) | List of ips for the cassandra nodes | `list(any)` | n/a | yes |
+| <a name="input_ssh-inbound-range"></a> [ssh-inbound-range](#input\_ssh-inbound-range) | CIDRs of address that are allowed to ssh in. | `list(any)` | n/a | yes |
+| <a name="input_subnet_ids"></a> [subnet\_ids](#input\_subnet\_ids) | List of subnet Ids | `list(any)` | n/a | yes |
+| <a name="input_template-file"></a> [template-file](#input\_template-file) | n/a | `string` | `"cassandra.tmpl"` | no |
+| <a name="input_vpc_id"></a> [vpc\_id](#input\_vpc\_id) | The id for the vpc | `string` | n/a | yes |
 
 ## Outputs
 
-| Name                                                                          | Description |
-| ----------------------------------------------------------------------------- | ----------- |
-| <a name="output_instances"></a> [instances](#output_instances)                | n/a         |
-| <a name="output_security_group"></a> [security_group](#output_security_group) | n/a         |
-
+| Name | Description |
+|------|-------------|
+| <a name="output_instances"></a> [instances](#output\_instances) | n/a |
+| <a name="output_security_group"></a> [security\_group](#output\_security\_group) | n/a |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 
 ## Related Projects
