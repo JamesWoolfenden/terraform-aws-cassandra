@@ -26,7 +26,7 @@ resource "aws_instance" "cassandra" {
 read -d '' CONTENT << EOF
 ${templatefile("${path.module}/template/cassandra.tmpl", { private_ip = var.private_ips[count.index], seeds = "${var.private_ips[0]},${var.private_ips[2]}" })}
 EOF
-sudo echo "$CONTENT" > /etc/dse/cassandra/cassandra.yaml
+sudo echo "$CONTENT" > /etc/cassandra/conf/cassandra.yaml
 
 yum update -y
 systemctl enable cassandra
@@ -34,7 +34,7 @@ service cassandra start
 HERE
 
   metadata_options {
-    http_tokens = "required"
+    http_endpoint = "enabled"
+    http_tokens   = "optional"
   }
-
 }
