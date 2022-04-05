@@ -7,11 +7,9 @@ hints_directory: /var/lib/cassandra/hints
 hints_flush_period_in_ms: 10000
 max_hints_file_size_in_mb: 128
 batchlog_replay_throttle_in_kb: 1024
-authenticator: com.datastax.bdp.cassandra.auth.DseAuthenticator
-authorizer: com.datastax.bdp.cassandra.auth.DseAuthorizer
-role_manager: com.datastax.bdp.cassandra.auth.DseRoleManager
-system_keyspaces_filtering: false
-
+authenticator: PasswordAuthenticator
+authorizer: CassandraAuthorizer
+role_manager: CassandraRoleManager
 roles_validity_in_ms: 120000
 permissions_validity_in_ms: 120000
 partitioner: org.apache.cassandra.dht.Murmur3Partitioner
@@ -51,20 +49,16 @@ listen_address: ${private_ip}
 # broadcast_address: 1.2.3.4
 start_native_transport: true
 native_transport_port: 9042
-native_transport_address: localhost
-native_transport_keepalive: true
 incremental_backups: false
 snapshot_before_compaction: false
 auto_snapshot: true
 column_index_size_in_kb: 16
 column_index_cache_size_in_kb: 2
-concurrent_materialized_view_builders: 2
 compaction_throughput_mb_per_sec: 16
 sstable_preemptive_open_interval_in_mb: 50
 
 read_request_timeout_in_ms: 5000
 range_request_timeout_in_ms: 10000
-aggregated_request_timeout_in_ms: 120000
 write_request_timeout_in_ms: 2000
 counter_write_request_timeout_in_ms: 5000
 cas_contention_timeout_in_ms: 1000
@@ -99,10 +93,6 @@ windows_timer_interval: 1
 enable_user_defined_functions: false
 enable_scripted_user_defined_functions: false
 enable_user_defined_functions_threads: true
-user_defined_function_warn_micros: 500
-user_defined_function_fail_micros: 10000
-user_defined_function_warn_heap_mb: 200
-user_defined_function_fail_heap_mb: 500
 
 user_function_timeout_policy: die
 transparent_data_encryption_options:
@@ -145,32 +135,3 @@ back_pressure_strategy:
         - high_ratio: 0.90
           factor: 5
           flow: FAST
-
-continuous_paging:
-    # The maximum number of concurrent sessions, any additional session will be rejected with an unavailable error.
-    max_concurrent_sessions: 60
-    # The maximum number of pages that can be buffered for each session
-    max_session_pages: 4
-    # The maximum size of a page, in MB. If an individual CQL row is larger than this value, the page can be larger than
-    # this value.
-    max_page_size_mb: 8
-    # The maximum time in milliseconds for which a local continuous query will run, assuming the client continues
-    # reading or requesting pages. When this threshold is exceeded, the session is swapped out and rescheduled.
-    # Swapping and rescheduling resources ensures the release of resources including those that prevent the memtables
-    # from flushing. Adjust when high write workloads exist on tables that have
-    # continuous paging requests.
-    max_local_query_time_ms: 5000
-    # The maximum time the server will wait for a client to request more pages, in seconds, assuming the
-    # server queue is full or the client has not required any more pages via a backpressure update request.
-    # Increase this value for extremely large page sizes (max_page_size_mb)
-    # or for extremely slow networks.
-    client_timeout_sec: 600
-    # How long the server waits for a cancel request to complete, in seconds.
-    cancel_timeout_sec: 5
-    # How long the server will wait, in milliseconds, before checking if a continuous paging session can be resumed when
-    # the session is paused because of backpressure.
-    paused_check_interval_ms: 1
-
-nodesync:
-    # The (maximum) rate (in kilobytes per second) for data validation.
-    rate_in_kb: 1024
