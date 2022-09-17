@@ -57,7 +57,7 @@ repos:
         verbose: true
         entry: checkov -d example/examplea --external-checks-dir checkov --download-external-modules true
   - repo: https://github.com/jameswoolfenden/pike
-    rev: v0.1.82
+    rev: v0.1.85
     hooks:
       - id: pike-docs-go
         args: ["-d", ".", "readme"]
