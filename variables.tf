@@ -48,3 +48,8 @@ variable "private_ips" {
   type        = list(any)
   description = "List of ips for the cassandra nodes"
 }
+
+variable "iam_instance_profile" {
+  type    = string
+  default = ""
+}

@@ -1,5 +1,6 @@
 resource "aws_instance" "cassandra" {
   # checkov:skip=CKV2_AWS_17: invalid check
+  # checkov:skip=CKV2_AWS_41: no role required
   count         = length(var.private_ips)
   ami           = data.aws_ami.ami.id
   instance_type = var.instance_type
@@ -37,4 +38,5 @@ HERE
     http_endpoint = "enabled"
     http_tokens   = "required"
   }
+  iam_instance_profile = var.iam_instance_profile
 }

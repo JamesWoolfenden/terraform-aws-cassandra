@@ -3,6 +3,9 @@ data "aws_subnet_ids" "subs" {
 }
 
 data "aws_vpcs" "main" {
+  tags = {
+    pike = "permissions"
+  }
 }
 
 data "aws_caller_identity" "current" {
