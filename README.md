@@ -30,7 +30,7 @@ The folder **example/examplea** contains a complete sample illustration of how t
 │       variables.tf
 ```
 
-As a minimum you must include a module reference in your own template Terraform code e.g. **module.cassandra.tf**:
+As a minimum, you must include a module reference in your template Terraform code e.g. **module.cassandra.tf**:
 
 ```hcl
 module "cassandra" {
@@ -47,10 +47,10 @@ module "cassandra" {
 }
 ```
 
-You will also need to define variables **variables.tf** and supply values **examplea.auto.tfvars**.
+You will also need to define **variables.tf** and supply values **examplea.auto.tfvars**.
 You'll need to adjust the values to your own.
-You will also need build a Cassandra AMI, see the Packer folder for that template.
-If you want to test the modules usage execute Terraform in the examplea folder:
+You will also need to build a Cassandra AMI, see the Packer folder for that template.
+If you want to test modules usage, execute Terraform in the examplea folder:
 
 ```cli
 cd example/examplea
@@ -128,7 +128,7 @@ No requirements.
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 4.62.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | n/a |
 
 ## Modules
 
