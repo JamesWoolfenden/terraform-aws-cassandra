@@ -20,6 +20,5 @@ variable "ami" {
 
 
 module "myip" {
-  source  = "jameswoolfenden/ip/http"
-  version = "0.2.7"
+  source = "jameswoolfenden/ip/http"
 }

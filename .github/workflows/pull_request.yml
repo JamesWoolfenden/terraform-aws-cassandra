@@ -16,18 +16,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3.3.0
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           token: ${{ github.token }}
           fetch-depth: '0'
       - name: Terraform Init
-        uses: hashicorp/terraform-github-actions@master
+        uses: hashicorp/terraform-github-actions@b2ca17c0c25198c67c668c37edcbc45ca086a91e # v0.8.0
         with:
           tf_actions_version: ${{ env.terraform }}
           tf_actions_subcommand: init
           tf_actions_working_dir: ${{ env.tf_target_dir }}
       - name: Terraform Validate
-        uses: hashicorp/terraform-github-actions@master
+        uses: hashicorp/terraform-github-actions@b2ca17c0c25198c67c668c37edcbc45ca086a91e # v0.8.0
         with:
           tf_actions_version: ${{ env.terraform }}
           tf_actions_subcommand: validate
@@ -36,11 +36,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3.3.0
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           token: ${{ github.token }}
           fetch-depth: '0'
-      - uses: actions/setup-python@v4.5.0
+      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
         with:
           python-version: 3.11
       - run: |
@@ -53,4 +53,4 @@ jobs:
           tar -xvf actionlint_1.6.23_linux_amd64.tar.gz --directory "$GITHUB_WORKSPACE/bin"
           chmod +x "$GITHUB_WORKSPACE/bin/actionlint"
           echo "$GITHUB_WORKSPACE/bin" >> "$GITHUB_PATH"
-      - uses: pre-commit/action@v3.0.0
+      - uses: pre-commit/action@2c7b3805fd2a0fd8c1884dcaebf91fc102a13ecd # v3.0.1
