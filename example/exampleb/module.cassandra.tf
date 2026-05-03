@@ -7,8 +7,6 @@ module "cassandra" {
   ssh-inbound-range = [module.myip.cidr]
   ami               = var.ami
 }
-
-
 variable "ami" {
   type        = map(any)
   description = "Contains information to select desired AMI"
@@ -17,9 +15,6 @@ variable "ami" {
     owners = ["amazon"]
   }
 }
-
-
 module "myip" {
-  source  = "jameswoolfenden/ip/http"
-  version = "0.2.7"
+  source = "git::https://github.com/JamesWoolfenden/terraform-http-ip.git?ref=5769331633debca683a81a38470083a0abd39049"
 }
