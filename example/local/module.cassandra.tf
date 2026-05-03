@@ -8,9 +8,6 @@ module "cassandra" {
   ami               = local.ami
   vpc_id            = tolist(data.aws_vpcs.main.ids)[0]
 }
-
-
 module "myip" {
-  source  = "jameswoolfenden/ip/http"
-  version = "0.2.7"
+  source = "git::https://github.com/JamesWoolfenden/terraform-http-ip.git?ref=5769331633debca683a81a38470083a0abd39049"
 }
