@@ -1,7 +1,7 @@
 module "cassandra" {
   source            = "../../"
   instance_type     = var.instance_type
-  subnet_ids        = concat(tolist(data.aws_subnet_ids.subs.ids), tolist(data.aws_subnet_ids.subs.ids))
+  subnet_ids        = concat(tolist(data.aws_subnets.subs.ids), tolist(data.aws_subnets.subs.ids))
   private_ips       = var.private_ips
   allowed_ranges    = [module.myip.cidr]
   ssh-inbound-range = [module.myip.cidr]
