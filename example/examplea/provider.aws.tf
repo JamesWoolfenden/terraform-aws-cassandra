@@ -8,9 +8,7 @@ provider "aws" {
     }
   }
 }
-
 provider "tls" {
 }
-
 provider "http" {
 }

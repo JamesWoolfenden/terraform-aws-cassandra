@@ -1,4 +1,5 @@
 resource "aws_security_group" "cassandra" {
+  # checkov:skip=CKV_AWS_382: Unrestricted outbound access required for resource functionality
   name        = "Cassandra"
   description = "Terraform Cassandra security group"
 

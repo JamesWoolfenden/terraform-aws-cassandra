@@ -1,4 +1,3 @@
-
 locals {
   ami = {
     filter = ["cassandra-BASE-v*"]

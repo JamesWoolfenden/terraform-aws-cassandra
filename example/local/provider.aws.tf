@@ -37,11 +37,9 @@ provider "aws" {
     sts              = "http://localhost:4592"
   }
 }
-
 provider "tls" {
   version = "2.0"
 }
-
 provider "http" {
   version = "1.1"
 }
