@@ -183,11 +183,13 @@ resource "aws_iam_policy" "terraform_pike" {
             "Sid": "VisualEditor0",
             "Effect": "Allow",
             "Action": [
+                "ec2:AssociateIamInstanceProfile",
                 "ec2:AuthorizeSecurityGroupEgress",
                 "ec2:AuthorizeSecurityGroupIngress",
                 "ec2:CreateSecurityGroup",
                 "ec2:DeleteSecurityGroup",
                 "ec2:DescribeAccountAttributes",
+                "ec2:DescribeIamInstanceProfileAssociations",
                 "ec2:DescribeImages",
                 "ec2:DescribeInstanceAttribute",
                 "ec2:DescribeInstanceCreditSpecifications",
@@ -195,10 +197,13 @@ resource "aws_iam_policy" "terraform_pike" {
                 "ec2:DescribeInstances",
                 "ec2:DescribeNetworkInterfaces",
                 "ec2:DescribeSecurityGroups",
+                "ec2:DescribeSubnets",
                 "ec2:DescribeTags",
                 "ec2:DescribeVolumes",
+                "ec2:DisassociateIamInstanceProfile",
                 "ec2:ModifyInstanceAttribute",
                 "ec2:MonitorInstances",
+                "ec2:ReplaceIamInstanceProfileAssociation",
                 "ec2:RevokeSecurityGroupEgress",
                 "ec2:RevokeSecurityGroupIngress",
                 "ec2:RunInstances",
@@ -206,6 +211,16 @@ resource "aws_iam_policy" "terraform_pike" {
                 "ec2:StopInstances",
                 "ec2:TerminateInstances",
                 "ec2:UnmonitorInstances"
+            ],
+            "Resource": [
+                "*"
+            ]
+        },
+        {
+            "Sid": "VisualEditor1",
+            "Effect": "Allow",
+            "Action": [
+                "iam:PassRole"
             ],
             "Resource": [
                 "*"
