@@ -1,5 +1,4 @@
 resource "aws_security_group" "cassandra" {
-  # checkov:skip=CKV_AWS_382: Unrestricted outbound access required for resource functionality
   name        = "Cassandra"
   description = "Terraform Cassandra security group"
 
@@ -8,7 +7,7 @@ resource "aws_security_group" "cassandra" {
     to_port     = 22
     protocol    = "tcp"
     description = "For SSH access"
-    cidr_blocks = var.ssh-inbound-range
+    cidr_blocks = var.ssh_inbound_range
   }
 
   ingress {

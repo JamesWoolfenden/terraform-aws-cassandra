@@ -1,0 +1,12 @@
+skip_policies:
+  - HLD_TF_026 # example/* dirs calling their own parent module via ../../ is the correct convention for a module's own example, not a reusability anti-pattern
+  - HLD_TF_065 # module.myip (terraform-http-ip) is an independently-published, independently-versioned module reused across many unrelated repos; one call site here isn't a single-use wrapper anti-pattern
+scan_roots:
+  - path: .
+    targets: [gha]
+  - path: example/examplea
+    targets: [terraform]
+  - path: example/exampleb
+    targets: [terraform]
+  - path: example/local
+    targets: [terraform]

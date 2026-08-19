@@ -1,0 +1,80 @@
+{
+  "findings": [
+    {
+      "confidence": "high",
+      "explanation": "root_block_device.volume_type is hardcoded to \"standard\", AWS's oldest magnetic EBS type. It has the worst latency/IOPS-per-dollar of any EBS type and is not billed or provisioned like SSD-backed volumes (gp3/gp2). For a database node where disk I/O directly drives read/write/compaction latency, this both costs more for a given performance target and delivers materially worse performance than gp3 at the same size. AWS also discourages new use of 'standard' volumes.",
+      "file": "aws_instance.cassandra.tf",
+      "first_seen": "2026-08-19",
+      "fix": "root_block_device {\n    volume_type           = \"gp3\"\n    volume_size           = 100\n    delete_on_termination = false\n    encrypted             = true\n  }",
+      "fixable": true,
+      "id": "HOLDEN_BP_001",
+      "last_seen": "2026-08-19",
+      "line": 12,
+      "principle": "cost",
+      "remediation": "Change volume_type to \"gp3\" (optionally exposing iops/throughput as variables). Note: verify in a plan first \u2014 some provider versions treat root_block_device.volume_type changes as requiring resource replacement, which matters for a stateful Cassandra node even though delete_on_termination=false protects the underlying volume.",
+      "resource": "aws_instance.cassandra",
+      "severity": "MEDIUM",
+      "status": "fixed",
+      "title": "Cassandra data node root volume uses legacy 'standard' (magnetic) EBS type"
+    },
+    {
+      "confidence": "high",
+      "explanation": "The user_data template computes seeds = \"${var.private_ips[0]},${var.private_ips[2]}\" for every instance, independent of count.index. This expression evaluates for all count instances regardless of cluster size: if var.private_ips has fewer than 3 elements (a 1- or 2-node cluster, which the module otherwise permits since count = length(var.private_ips) has no lower bound), the [2] index is out of range and every instance in the plan fails. Even on valid 3+ node clusters, skipping index 1 for the seed list is an arbitrary, undocumented choice with no comment explaining why index 1 is excluded.",
+      "file": "aws_instance.cassandra.tf",
+      "first_seen": "2026-08-19",
+      "fixable": false,
+      "id": "HOLDEN_BP_002",
+      "last_seen": "2026-08-19",
+      "line": 28,
+      "principle": "reliability",
+      "remediation": "Compute seeds from a bounded slice instead of fixed literal indices, e.g. join(\",\", slice(var.private_ips, 0, min(3, length(var.private_ips)))), and/or add a variable validation on private_ips requiring length >= 3 if smaller clusters are genuinely unsupported.",
+      "resource": "aws_instance.cassandra",
+      "severity": "MEDIUM",
+      "status": "open",
+      "title": "Cassandra seed list hardcodes indices [0] and [2], breaking on clusters smaller than 3 nodes"
+    },
+    {
+      "confidence": "high",
+      "explanation": "Neither resource sets a tags block, and the module exposes no tags/tags_default variable. Consumers can't attach cost-allocation, ownership, or environment tags to the instances or security group this module creates, which hampers cost tracking and resource identification across the 3 example roots that all invoke this module.",
+      "file": "aws_instance.cassandra.tf",
+      "first_seen": "2026-08-19",
+      "fix": "variable \"tags\" {\n  description = \"Tags to apply to resources created by this module\"\n  type        = map(string)\n  default     = {}\n}",
+      "fixable": true,
+      "id": "HOLDEN_BP_003",
+      "last_seen": "2026-08-19",
+      "line": 1,
+      "note": "Initially fixed via a module-level tags variable, then deliberately reverted: tagging is handled by provider-level default_tags in each consuming root instead, which merges onto every resource automatically without the module needing its own tags plumbing.",
+      "principle": "maintainability",
+      "remediation": "Add a `variable \"tags\"` (type = map(string), default = {}) and set `tags = var.tags` on both aws_instance.cassandra and aws_security_group.cassandra.",
+      "resource": "aws_instance.cassandra, aws_security_group.cassandra",
+      "severity": "LOW",
+      "status": "suppressed",
+      "title": "aws_instance.cassandra and aws_security_group.cassandra have no tags"
+    },
+    {
+      "confidence": "medium",
+      "explanation": "Storage sizing for a database node is an environment-specific decision (dev vs. prod data volumes differ significantly), but volume_size = 100 is a fixed literal with no variable, forcing anyone needing a different size to fork the module.",
+      "file": "aws_instance.cassandra.tf",
+      "first_seen": "2026-08-19",
+      "fix": "variable \"volume_size\" {\n  description = \"Size in GB of the root EBS volume for each Cassandra node\"\n  type        = number\n  default     = 100\n}",
+      "fixable": true,
+      "id": "HOLDEN_BP_004",
+      "last_seen": "2026-08-19",
+      "line": 13,
+      "principle": "maintainability",
+      "remediation": "Add a `variable \"volume_size\"` (type = number, default = 100) and reference it in root_block_device.",
+      "resource": "aws_instance.cassandra",
+      "severity": "INFO",
+      "status": "fixed",
+      "title": "root_block_device.volume_size is hardcoded to 100 GB"
+    }
+  ],
+  "scan_date": "2026-08-19T00:00:00Z",
+  "scan_path": ".",
+  "suggested_policies": [
+    {
+      "rationale": "EBS 'standard' (magnetic) volumes are AWS's legacy, highest-latency, worst-cost-per-IOPS volume type. Any root_block_device or aws_ebs_volume pinned to volume_type = \"standard\" is almost always an oversight rather than an intentional choice, and is deterministically detectable.",
+      "yaml": "id: HLD_AWS_XXX\nname: EBS volumes should not use the legacy 'standard' (magnetic) volume type\nprinciple: cost\nseverity: LOW\nrationale: |\n  The 'standard' EBS volume type is magnetic storage with the worst\n  latency and IOPS-per-dollar of any EBS type. gp3 offers better\n  performance at lower cost for nearly all workloads.\nremediation: |\n  Use gp3 (or io2 for high-IOPS needs) instead:\n    root_block_device {\n      volume_type = \"gp3\"\n    }\nresources:\n  aws_instance:\n    path: root_block_device.volume_type\n    not_equals: \"standard\"\n"
+    }
+  ]
+}

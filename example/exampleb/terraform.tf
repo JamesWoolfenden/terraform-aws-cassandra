@@ -1,7 +1,6 @@
+# holden:ignore:HLD_TF_004: its an example
 terraform {
   required_providers {
-
-
     tls = {
       source  = "hashicorp/tls"
       version = "4.2.1"
@@ -15,5 +14,5 @@ terraform {
       version = "6.43.0"
     }
   }
-  required_version = ">=0.14.8"
+  required_version = ">=1.9.0"
 }

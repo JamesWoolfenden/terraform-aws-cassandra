@@ -1,0 +1,10 @@
+suppressions:
+  - policy_id: HLD_AWS_133
+    resource_id: aws_vpc.main
+    reason: "Disposable example VPC created/destroyed per test run; a CloudWatch log group + IAM role for flow logs isn't warranted for throwaway infrastructure"
+    approved_by: james.woolfenden@gmail.com
+
+  - module: module.cassandra
+    policy_id: HLD_AWS_092
+    reason: "Unrestricted egress is intentional -- Cassandra nodes need OS updates and cluster comms on dynamic ports; already documented inline via tfsec:ignore:AWS009 in the module source"
+    approved_by: james.woolfenden@gmail.com

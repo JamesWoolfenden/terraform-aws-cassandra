@@ -3,7 +3,7 @@ provider "aws" {
   default_tags {
     tags = {
       createdby = "terraform"
-      module    = "terraform-aws-vpc"
+      module    = "terraform-aws-cassandra"
       owner     = "James Woolfenden"
     }
   }

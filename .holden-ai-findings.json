@@ -1,0 +1,107 @@
+{
+  "findings": [
+    {
+      "confidence": "high",
+      "explanation": "var.allowed_ranges defaults to [\"0.0.0.0/0\"] and gates 8 of the 10 ingress rules on aws_security_group.cassandra: CQL native transport (9042), Thrift (9160), opscenterd webui (8888), JMX (7199), inter-node cluster (7000/7001), and opscenterd daemon/agent (61620/61621) -- see aws_security_groups.cassandra.tf. All 3 examples in this repo happen to override it with a deployer's own /32 via module.myip, so nothing in this repo is currently exposed, but any other consumer of this published module who doesn't explicitly pass allowed_ranges gets a Cassandra cluster with unauthenticated JMX (a well-known RCE vector) and the internode protocol open to the entire internet. Holden's deterministic port-based checks (HLD_AWS_010/032/182) only cover the well-known SSH/RDP/HTTP ports; there's no rule for Cassandra's own ports, and the exposure only becomes visible after resolving var.allowed_ranges's OWN default several files away from the resource -- exactly the kind of indirection a single-resource attribute check can't see.",
+      "file": "variables.tf",
+      "first_seen": "2026-08-19",
+      "fix": "variable \"allowed_ranges\" {\n  description = \"Allowed ranges that can access the cluster\"\n  type        = list(any)\n  default     = []\n  validation {\n    condition     = alltrue([for r in var.allowed_ranges : can(cidrhost(r, 0))])\n    error_message = \"allowed_ranges must be a list of valid CIDR blocks.\"\n  }\n  validation {\n    condition     = !contains(var.allowed_ranges, \"0.0.0.0/0\")\n    error_message = \"allowed_ranges must not include 0.0.0.0/0; restrict cluster access to known CIDRs.\"\n  }\n}",
+      "fixable": true,
+      "id": "HOLDEN_AI_001",
+      "last_seen": "2026-08-19",
+      "line": 10,
+      "principle": "network-security",
+      "related_resources": [
+        "aws_security_group.cassandra"
+      ],
+      "remediation": "Mirror the pattern already used on var.ssh_inbound_range in the same file: change the default from [\"0.0.0.0/0\"] to [] (forcing every caller to opt in explicitly) and add a validation block rejecting 0.0.0.0/0.",
+      "resource": "var.allowed_ranges",
+      "severity": "HIGH",
+      "status": "fixed",
+      "title": "allowed_ranges defaults to 0.0.0.0/0, exposing CQL/Thrift/JMX/internode ports to the internet for any caller that doesn't override it"
+    },
+    {
+      "confidence": "high",
+      "explanation": "server_encryption_options.internode_encryption is 'none' (line 74) and client_encryption_options.enabled is false (line 82), so both inter-node cluster traffic and client CQL traffic are unencrypted by default with no module variable to turn either on -- every consumer of this module gets plaintext Cassandra traffic unconditionally. Compounding this, all three key_provider blocks (server, client, and transparent_data_encryption_options) hardcode the identical keystore_password/truststore_password of \"cassandra\" (lines 76, 86, 109, 111) -- a well-known default that would be the first thing tried against any deployment that later enables encryption without regenerating these. This is a static template file templatefile()'d directly into every node's user_data (aws_instance.cassandra.tf), so it's part of the deployed config for every module consumer, not a one-off typo. Combined with HOLDEN_AI_001 (the same CQL/internode ports open to 0.0.0.0/0 by default), an external consumer who doesn't override both gets unencrypted, internet-reachable database traffic. A secret scanner wouldn't flag \"cassandra\" as a credential (too low-entropy, reads as a placeholder), and holden has no rule that inspects templatefile() targets at all.",
+      "file": "template/cassandra.tmpl",
+      "first_seen": "2026-08-19",
+      "fixable": false,
+      "id": "HOLDEN_AI_002",
+      "last_seen": "2026-08-19",
+      "line": 73,
+      "principle": "encryption",
+      "related_resources": [
+        "aws_instance.cassandra",
+        "var.allowed_ranges"
+      ],
+      "remediation": "At minimum, replace the hardcoded keystore/truststore passwords with module variables (no safe default -- require the caller to supply real values), and consider exposing internode_encryption/client encryption as variables rather than hardcoding them off.",
+      "resource": "template/cassandra.tmpl",
+      "severity": "HIGH",
+      "status": "open",
+      "title": "cassandra.tmpl ships client and internode encryption disabled, plus a shared hardcoded keystore/truststore password, as the module's unconditional default"
+    },
+    {
+      "confidence": "medium",
+      "explanation": "aws_instance.cassandra has lifecycle { create_before_destroy = true } (signalling the module expects to replace nodes routinely, e.g. on an AMI change) and disable_api_termination = var.disable_api_termination, which now defaults to true (added this session). Historically, terraform-provider-aws's EC2 destroy path issues TerminateInstances directly; if disable_api_termination is true on the instance being replaced, that call fails with an AWS API error unless the provider version in use auto-clears the flag before deleting. I can't verify from the Terraform source alone whether the currently pinned aws provider version (6.43.0, per the example terraform.tf files) handles this automatically -- this is provider-runtime behavior, not something resolvable from config. If it doesn't, every create_before_destroy replacement cycle will fail non-interactively and require someone to manually disable termination protection on the old instance via the AWS console/CLI before apply can complete.",
+      "file": "aws_instance.cassandra.tf",
+      "first_seen": "2026-08-19",
+      "fixable": false,
+      "id": "HOLDEN_AI_003",
+      "last_seen": "2026-08-19",
+      "line": 20,
+      "principle": "reliability",
+      "remediation": "Verify with an actual replace-triggering apply (e.g. change instance_type) against a real or LocalStack AWS account whether the old instance terminates cleanly. If it doesn't, either drop disable_api_termination's default to false, or document the manual unprotect step as part of the module's upgrade/replace procedure.",
+      "resource": "aws_instance.cassandra",
+      "severity": "MEDIUM",
+      "status": "open",
+      "title": "create_before_destroy plus disable_api_termination defaulting to true may block routine replacement applies"
+    },
+    {
+      "confidence": "high",
+      "explanation": "example/exampleb's var.ami default filters for [\"amzn2-ami-hvm-*-x86_64-ebs\"], owners [\"amazon\"] -- a stock, unmodified Amazon Linux 2 AMI. Both example/examplea and example/local instead filter for [\"cassandra-BASE-v*\"] (their own locals.tf ami block), i.e. a custom pre-baked image. The root module's own user_data (aws_instance.cassandra.tf) never installs Cassandra -- it only runs systemctl enable cassandra / service cassandra start, which assumes the AMI already has the cassandra service. exampleb is the one example in the repo whose default AMI wouldn't actually have that service, so a fresh apply with no ami override would boot successfully but fail to bring up Cassandra.",
+      "file": "example/exampleb/variables.tf",
+      "first_seen": "2026-08-19",
+      "fixable": false,
+      "id": "HOLDEN_AI_004",
+      "last_seen": "2026-08-19",
+      "line": 20,
+      "principle": "reliability",
+      "related_resources": [
+        "example/examplea/locals.tf",
+        "example/local/locals.tf",
+        "aws_instance.cassandra.tf"
+      ],
+      "remediation": "Either change exampleb's default ami filter to match the cassandra-BASE-v* pattern used by the other two examples, or -- if a stock AMI is genuinely intended for exampleb -- add the missing install step to the module's user_data. Which one is correct depends on intent, not something inferrable from the code alone.",
+      "resource": "var.ami",
+      "severity": "MEDIUM",
+      "status": "open",
+      "title": "exampleb's default AMI filter picks a stock Amazon Linux 2 image, inconsistent with examplea/local and with the module's own user_data assumptions"
+    },
+    {
+      "confidence": "high",
+      "explanation": "default_tags.tags.module is set to \"terraform-aws-vpc\", but this is example/examplea inside terraform-aws-cassandra -- a copy-paste leftover from a different module's provider config, now tagging every resource this example creates (the new aws_vpc/aws_subnet resources included) with a factually wrong module name.",
+      "file": "example/examplea/provider.aws.tf",
+      "first_seen": "2026-08-19",
+      "fix": "      module    = \"terraform-aws-cassandra\"",
+      "fixable": true,
+      "id": "HOLDEN_AI_005",
+      "last_seen": "2026-08-19",
+      "line": 6,
+      "principle": "maintainability",
+      "remediation": "Change the tag value to \"terraform-aws-cassandra\".",
+      "resource": "provider.aws",
+      "severity": "LOW",
+      "status": "fixed",
+      "title": "examplea's provider default_tags names the wrong module (\"terraform-aws-vpc\")"
+    }
+  ],
+  "scan_date": "2026-08-19T00:00:00Z",
+  "scan_path": ".",
+  "suggested_policies": [
+    {
+      "rationale": "JMX (port 7199) is a generic Java management interface used across many JVM-based services (Cassandra, Kafka, Elasticsearch, arbitrary Java apps), and unauthenticated/weakly-authenticated JMX exposed to the internet is a well-established remote-code-execution vector via MBean class loading -- the same class of risk as the SSH/RDP/HTTP-80 checks holden already ships as dedicated port rules (HLD_AWS_010/032/182), just for a different well-known dangerous port. coverage_by_type[\"aws_security_group\"] has 11 existing policies and none of them check this port.",
+      "yaml": "id: HLD_PROPOSED_001\nname: JMX must not be open to the internet\nprinciple: network-security\nseverity: HIGH\nrationale: |\n  JMX (Java Management Extensions) on port 7199 is used by many JVM-based\n  services (Cassandra, Kafka, Elasticsearch, generic Java applications) for\n  runtime management and monitoring. Unauthenticated or weakly-authenticated\n  JMX exposed to the internet is a well-known remote code execution vector --\n  JMX's MBean interface allows arbitrary class loading and invocation, and\n  default JMX configurations frequently ship without authentication enabled.\n  Automated scanners specifically probe for open JMX ports.\nremediation: |\n  Remove or restrict the ingress rule that opens port 7199 to 0.0.0.0/0;\n  restrict JMX access to a specific management CIDR, a bastion host, or\n  disable remote JMX entirely if not required.\nresources:\n  aws_security_group:\n    path: ingress\n    not_any:\n      all:\n        - path: cidr_blocks\n          contains: \"0.0.0.0/0\"\n        - path: from_port\n          lte: 7199\n        - path: to_port\n          gte: 7199\n"
+    }
+  ],
+  "suggested_suppressions": []
+}

@@ -1,7 +1,16 @@
 provider "aws" {
-  region = "eu-west-1"
+  region = var.region
+
+  default_tags {
+    tags = {
+      ManagedBy = "Terraform"
+      Example   = "exampleb"
+    }
+  }
 }
+
 provider "tls" {
 }
+
 provider "http" {
 }

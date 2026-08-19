@@ -1,0 +1,10 @@
+suppressions:
+  - policy_id: HLD_TF_009
+    resource_id: provider.aws
+    reason: "access_key/secret_key are LocalStack's documented mock credential convention for local testing, not real secrets"
+    approved_by: james.woolfenden@gmail.com
+
+  - module: module.cassandra
+    policy_id: HLD_AWS_092
+    reason: "Unrestricted egress is intentional -- Cassandra nodes need OS updates and cluster comms on dynamic ports; already documented inline via tfsec:ignore:AWS009 in the module source"
+    approved_by: james.woolfenden@gmail.com

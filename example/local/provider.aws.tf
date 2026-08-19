@@ -1,14 +1,19 @@
 provider "aws" {
-  region  = "eu-west-1"
-  version = "~>2.64"
-  # tfsec:ignore:AWS044
-  access_key = "mock_access_key"
-  # tfsec:ignore:GEN003
+  region = var.region
+
+  access_key                  = "mock_access_key"
   secret_key                  = "mock_secret_key"
-  s3_force_path_style         = true
+  s3_use_path_style           = true
   skip_credentials_validation = true
   skip_metadata_api_check     = true
   skip_requesting_account_id  = true
+
+  default_tags {
+    tags = {
+      ManagedBy = "Terraform"
+      Example   = "local"
+    }
+  }
 
   endpoints {
     apigateway       = "http://localhost:4567"
@@ -37,9 +42,9 @@ provider "aws" {
     sts              = "http://localhost:4592"
   }
 }
+
 provider "tls" {
-  version = "2.0"
 }
+
 provider "http" {
-  version = "1.1"
 }
