@@ -45,8 +45,17 @@ repos:
         language: system
         entry: holden scan --no-banner
         pass_filenames: false
+        # pre-push, not pre-commit: a system hook resolves holden from $PATH,
+        # and no CI runner has it. CI invokes `pre-commit run --all-files`,
+        # whose default stage is pre-commit, so anything on that stage runs
+        # there and fails with "Executable `holden` not found". pre-push still
+        # gates every push from a machine that has holden installed, and is
+        # skipped by the CI invocation.
+        #
+        # Requires `pre-commit install --hook-type pre-push` once per clone.
+        stages: [pre-push]
   - repo: https://github.com/jameswoolfenden/pike
-    rev: 2dcc68be027ecb386e78467d0a7765d547fa6c99 # v1.0.11
+    rev: a38ea683d195b2a3a3dc08d233dc231f1db58f73 # v1.0.12
     hooks:
       - id: pike-docs-go
         args: ["readme","-d", ".", "-i"]
