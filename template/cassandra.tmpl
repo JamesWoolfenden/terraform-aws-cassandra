@@ -71,19 +71,25 @@ dynamic_snitch_update_interval_in_ms: 100
 dynamic_snitch_reset_interval_in_ms: 600000
 dynamic_snitch_badness_threshold: 0.1
 server_encryption_options:
-    internode_encryption: none
+    internode_encryption: ${internode_encryption}
     keystore: resources/dse/conf/.keystore
-    keystore_password: cassandra
+%{ if keystore_password != null ~}
+    keystore_password: ${keystore_password}
+%{ endif ~}
     truststore: resources/dse/conf/.truststore
-    truststore_password: cassandra
+%{ if truststore_password != null ~}
+    truststore_password: ${truststore_password}
+%{ endif ~}
 
 # enable or disable client/server encryption.
 client_encryption_options:
-    enabled: false
+    enabled: ${client_encryption_enabled}
     # If enabled and optional is set to true, encrypted and unencrypted connections over native transport are handled.
     optional: false
     keystore: resources/dse/conf/.keystore
-    keystore_password: cassandra
+%{ if keystore_password != null ~}
+    keystore_password: ${keystore_password}
+%{ endif ~}
 
 internode_compression: dc
 inter_dc_tcp_nodelay: false
@@ -106,9 +112,13 @@ transparent_data_encryption_options:
       - class_name: org.apache.cassandra.security.JKSKeyProvider
         parameters:
           - keystore: conf/.keystore
-            keystore_password: cassandra
+%{ if keystore_password != null ~}
+            keystore_password: ${keystore_password}
+%{ endif ~}
             store_type: JCEKS
-            key_password: cassandra
+%{ if keystore_password != null ~}
+            key_password: ${keystore_password}
+%{ endif ~}
 
 
 #####################

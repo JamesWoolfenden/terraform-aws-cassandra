@@ -1,6 +1,7 @@
 output "cassandra" {
   description = "The cassandra module's outputs (instances, security_group)"
   value       = module.cassandra
+  sensitive   = true
 }
 output "subnet" {
   description = "The first Cassandra subnet created for the cluster"

@@ -1,4 +1,5 @@
 {
+  "category": "all",
   "findings": [
     {
       "confidence": "high",
@@ -18,52 +19,57 @@
       "resource": "var.allowed_ranges",
       "severity": "HIGH",
       "status": "fixed",
-      "title": "allowed_ranges defaults to 0.0.0.0/0, exposing CQL/Thrift/JMX/internode ports to the internet for any caller that doesn't override it"
+      "suppression_reason": null,
+      "title": "allowed_ranges defaults to 0.0.0.0/0, exposing CQL/Thrift/JMX/internode ports to the internet for any caller that doesn't override it",
+      "unresolved_since": null
     },
     {
       "confidence": "high",
-      "explanation": "server_encryption_options.internode_encryption is 'none' (line 74) and client_encryption_options.enabled is false (line 82), so both inter-node cluster traffic and client CQL traffic are unencrypted by default with no module variable to turn either on -- every consumer of this module gets plaintext Cassandra traffic unconditionally. Compounding this, all three key_provider blocks (server, client, and transparent_data_encryption_options) hardcode the identical keystore_password/truststore_password of \"cassandra\" (lines 76, 86, 109, 111) -- a well-known default that would be the first thing tried against any deployment that later enables encryption without regenerating these. This is a static template file templatefile()'d directly into every node's user_data (aws_instance.cassandra.tf), so it's part of the deployed config for every module consumer, not a one-off typo. Combined with HOLDEN_AI_001 (the same CQL/internode ports open to 0.0.0.0/0 by default), an external consumer who doesn't override both gets unencrypted, internet-reachable database traffic. A secret scanner wouldn't flag \"cassandra\" as a credential (too low-entropy, reads as a placeholder), and holden has no rule that inspects templatefile() targets at all.",
+      "explanation": "server_encryption_options.internode_encryption is 'none' (line 74) and client_encryption_options.enabled is false (line 82), so both inter-node cluster traffic and client CQL traffic are unencrypted by default with no module variable to turn either on -- every consumer of this module gets plaintext Cassandra traffic unconditionally. Compounding this, all three key_provider blocks (server, client, and transparent_data_encryption_options) hardcode the identical keystore_password/truststore_password of \"cassandra\" (lines 76, 86, 109, 111) -- a well-known default that would be the first thing tried against any deployment that later enables encryption without regenerating these. This is a static template file templatefile()'d directly into every node's user_data (aws_instance.cassandra.tf), so it's part of the deployed config for every module consumer, not a one-off typo. A secret scanner wouldn't flag \"cassandra\" as a credential (too low-entropy, reads as a placeholder), and holden has no rule that inspects templatefile() targets at all. Mitigating context: allowed_ranges now defaults to [] and rejects 0.0.0.0/0, so the plaintext traffic is no longer internet-reachable by default, but it is still unencrypted in transit within the VPC.",
       "file": "template/cassandra.tmpl",
       "first_seen": "2026-08-19",
       "fixable": false,
       "id": "HOLDEN_AI_002",
-      "last_seen": "2026-08-19",
+      "last_seen": "2026-11-10",
       "line": 73,
       "principle": "encryption",
       "related_resources": [
-        "aws_instance.cassandra",
-        "var.allowed_ranges"
+        "aws_instance.cassandra"
       ],
       "remediation": "At minimum, replace the hardcoded keystore/truststore passwords with module variables (no safe default -- require the caller to supply real values), and consider exposing internode_encryption/client encryption as variables rather than hardcoding them off.",
       "resource": "template/cassandra.tmpl",
       "severity": "HIGH",
-      "status": "open",
-      "title": "cassandra.tmpl ships client and internode encryption disabled, plus a shared hardcoded keystore/truststore password, as the module's unconditional default"
+      "status": "fixed",
+      "suppression_reason": null,
+      "title": "cassandra.tmpl ships client and internode encryption disabled, plus a shared hardcoded keystore/truststore password, as the module's unconditional default",
+      "unresolved_since": null
     },
     {
       "confidence": "medium",
-      "explanation": "aws_instance.cassandra has lifecycle { create_before_destroy = true } (signalling the module expects to replace nodes routinely, e.g. on an AMI change) and disable_api_termination = var.disable_api_termination, which now defaults to true (added this session). Historically, terraform-provider-aws's EC2 destroy path issues TerminateInstances directly; if disable_api_termination is true on the instance being replaced, that call fails with an AWS API error unless the provider version in use auto-clears the flag before deleting. I can't verify from the Terraform source alone whether the currently pinned aws provider version (6.43.0, per the example terraform.tf files) handles this automatically -- this is provider-runtime behavior, not something resolvable from config. If it doesn't, every create_before_destroy replacement cycle will fail non-interactively and require someone to manually disable termination protection on the old instance via the AWS console/CLI before apply can complete.",
+      "explanation": "aws_instance.cassandra has lifecycle { create_before_destroy = true } (signalling the module expects to replace nodes routinely, e.g. on an AMI change) and disable_api_termination = var.disable_api_termination, which defaults to true. If the pinned aws provider version does not clear the flag before TerminateInstances, every create_before_destroy replacement cycle fails non-interactively and requires someone to manually disable termination protection on the old instance before apply can complete. This is provider-runtime behavior, not resolvable from config alone.",
       "file": "aws_instance.cassandra.tf",
       "first_seen": "2026-08-19",
       "fixable": false,
       "id": "HOLDEN_AI_003",
-      "last_seen": "2026-08-19",
-      "line": 20,
+      "last_seen": "2026-11-10",
+      "line": 1,
       "principle": "reliability",
       "remediation": "Verify with an actual replace-triggering apply (e.g. change instance_type) against a real or LocalStack AWS account whether the old instance terminates cleanly. If it doesn't, either drop disable_api_termination's default to false, or document the manual unprotect step as part of the module's upgrade/replace procedure.",
       "resource": "aws_instance.cassandra",
       "severity": "MEDIUM",
-      "status": "open",
-      "title": "create_before_destroy plus disable_api_termination defaulting to true may block routine replacement applies"
+      "status": "fixed",
+      "suppression_reason": null,
+      "title": "create_before_destroy plus disable_api_termination defaulting to true may block routine replacement applies",
+      "unresolved_since": null
     },
     {
       "confidence": "high",
-      "explanation": "example/exampleb's var.ami default filters for [\"amzn2-ami-hvm-*-x86_64-ebs\"], owners [\"amazon\"] -- a stock, unmodified Amazon Linux 2 AMI. Both example/examplea and example/local instead filter for [\"cassandra-BASE-v*\"] (their own locals.tf ami block), i.e. a custom pre-baked image. The root module's own user_data (aws_instance.cassandra.tf) never installs Cassandra -- it only runs systemctl enable cassandra / service cassandra start, which assumes the AMI already has the cassandra service. exampleb is the one example in the repo whose default AMI wouldn't actually have that service, so a fresh apply with no ami override would boot successfully but fail to bring up Cassandra.",
+      "explanation": "example/exampleb's var.ami default filters for [\"amzn2-ami-hvm-*-x86_64-ebs\"], owners [\"amazon\"] -- a stock, unmodified Amazon Linux 2 AMI. Both example/examplea and example/local instead filter for [\"cassandra-BASE-v*\"] (their own locals.tf ami block), i.e. a custom pre-baked image. The root module's own user_data (aws_instance.cassandra.tf) never installs Cassandra -- it only writes /etc/cassandra/conf/cassandra.yaml and runs systemctl enable cassandra / service cassandra start, which assumes the AMI already has the cassandra service. exampleb is the one example in the repo whose default AMI wouldn't actually have that service, so a fresh apply with no ami override would boot successfully but fail to bring up Cassandra.",
       "file": "example/exampleb/variables.tf",
       "first_seen": "2026-08-19",
       "fixable": false,
       "id": "HOLDEN_AI_004",
-      "last_seen": "2026-08-19",
+      "last_seen": "2026-11-10",
       "line": 20,
       "principle": "reliability",
       "related_resources": [
@@ -74,12 +80,14 @@
       "remediation": "Either change exampleb's default ami filter to match the cassandra-BASE-v* pattern used by the other two examples, or -- if a stock AMI is genuinely intended for exampleb -- add the missing install step to the module's user_data. Which one is correct depends on intent, not something inferrable from the code alone.",
       "resource": "var.ami",
       "severity": "MEDIUM",
-      "status": "open",
-      "title": "exampleb's default AMI filter picks a stock Amazon Linux 2 image, inconsistent with examplea/local and with the module's own user_data assumptions"
+      "status": "fixed",
+      "suppression_reason": null,
+      "title": "exampleb's default AMI filter picks a stock Amazon Linux 2 image, inconsistent with examplea/local and with the module's own user_data assumptions",
+      "unresolved_since": null
     },
     {
       "confidence": "high",
-      "explanation": "default_tags.tags.module is set to \"terraform-aws-vpc\", but this is example/examplea inside terraform-aws-cassandra -- a copy-paste leftover from a different module's provider config, now tagging every resource this example creates (the new aws_vpc/aws_subnet resources included) with a factually wrong module name.",
+      "explanation": "default_tags.tags.module is set to \"terraform-aws-cassandra\" in example/examplea/provider.aws.tf; the earlier copy-paste leftover (\"terraform-aws-vpc\") is gone.",
       "file": "example/examplea/provider.aws.tf",
       "first_seen": "2026-08-19",
       "fix": "      module    = \"terraform-aws-cassandra\"",
@@ -92,16 +100,79 @@
       "resource": "provider.aws",
       "severity": "LOW",
       "status": "fixed",
-      "title": "examplea's provider default_tags names the wrong module (\"terraform-aws-vpc\")"
-    }
-  ],
-  "scan_date": "2026-08-19T00:00:00Z",
-  "scan_path": ".",
-  "suggested_policies": [
+      "suppression_reason": null,
+      "title": "examplea's provider default_tags names the wrong module (\"terraform-aws-vpc\")",
+      "unresolved_since": null
+    },
     {
-      "rationale": "JMX (port 7199) is a generic Java management interface used across many JVM-based services (Cassandra, Kafka, Elasticsearch, arbitrary Java apps), and unauthenticated/weakly-authenticated JMX exposed to the internet is a well-established remote-code-execution vector via MBean class loading -- the same class of risk as the SSH/RDP/HTTP-80 checks holden already ships as dedicated port rules (HLD_AWS_010/032/182), just for a different well-known dangerous port. coverage_by_type[\"aws_security_group\"] has 11 existing policies and none of them check this port.",
-      "yaml": "id: HLD_PROPOSED_001\nname: JMX must not be open to the internet\nprinciple: network-security\nseverity: HIGH\nrationale: |\n  JMX (Java Management Extensions) on port 7199 is used by many JVM-based\n  services (Cassandra, Kafka, Elasticsearch, generic Java applications) for\n  runtime management and monitoring. Unauthenticated or weakly-authenticated\n  JMX exposed to the internet is a well-known remote code execution vector --\n  JMX's MBean interface allows arbitrary class loading and invocation, and\n  default JMX configurations frequently ship without authentication enabled.\n  Automated scanners specifically probe for open JMX ports.\nremediation: |\n  Remove or restrict the ingress rule that opens port 7199 to 0.0.0.0/0;\n  restrict JMX access to a specific management CIDR, a bastion host, or\n  disable remote JMX entirely if not required.\nresources:\n  aws_security_group:\n    path: ingress\n    not_any:\n      all:\n        - path: cidr_blocks\n          contains: \"0.0.0.0/0\"\n        - path: from_port\n          lte: 7199\n        - path: to_port\n          gte: 7199\n"
+      "confidence": "medium",
+      "explanation": "aws_instance.cassandra sets a fixed private_ip = each.key and also has create_before_destroy = true. When a change forces replacement (new AMI, instance_type), Terraform creates the replacement first, and it requests the same private IP that the old instance still holds in the same subnet, so EC2 rejects it with InvalidIPAddress.InUse. The apply then fails part-way through. This is the create_before_destroy contagion pattern with a static, unique attribute; no rule sees it because it needs two attributes on one resource interpreted together with provider/EC2 semantics. Medium confidence because the outcome is EC2 runtime behavior.",
+      "file": "aws_instance.cassandra.tf",
+      "first_seen": "2026-11-10",
+      "fixable": false,
+      "id": "HOLDEN_AI_006",
+      "last_seen": "2026-11-10",
+      "line": 1,
+      "principle": "reliability",
+      "related_resources": [
+        "var.private_ips"
+      ],
+      "remediation": "Either drop create_before_destroy (accepting a brief per-node outage, acceptable for a rolling Cassandra replacement done one node at a time), or stop pinning private_ip so the replacement can take a new address. Document the intended node-replacement procedure either way.",
+      "resource": "aws_instance.cassandra",
+      "severity": "MEDIUM",
+      "status": "fixed",
+      "suppression_reason": null,
+      "title": "create_before_destroy with a fixed private_ip will collide with the old instance on any forced replacement",
+      "unresolved_since": null
+    },
+    {
+      "confidence": "medium",
+      "explanation": "Nothing in the module or its examples verifies that the cluster formed and all nodes are up. user_data only runs 'service cassandra start' with no check or failure signal, there is no tftest/terratest or test directory, and the outputs expose only the instances and security group. Tracked by the open GitHub issue #5 ('A test to check that the cluster and all nodes are up'). Combined with HOLDEN_AI_004 (exampleb can boot with no Cassandra at all), a broken cluster currently looks like a successful apply.",
+      "file": "aws_instance.cassandra.tf",
+      "first_seen": "2026-11-10",
+      "fixable": false,
+      "id": "HOLDEN_AI_007",
+      "last_seen": "2026-11-10",
+      "line": 1,
+      "principle": "reliability",
+      "related_resources": [
+        "outputs.tf",
+        "example/examplea/module.cassandra.tf"
+      ],
+      "remediation": "Add an example-level post-apply test that runs 'nodetool status' (or a CQL connection on 9042) against each node and asserts all are UN (Up/Normal). Optionally add CloudWatch status-check alarms on the instances for ongoing health.",
+      "resource": "aws_instance.cassandra",
+      "severity": "LOW",
+      "status": "open",
+      "suppression_reason": null,
+      "title": "No check that the cluster and all nodes come up (GitHub issue #5)",
+      "unresolved_since": "2026-11-10"
+    },
+    {
+      "confidence": "medium",
+      "explanation": "The new keystore_password/truststore_password variables are sensitive in Terraform, but aws_instance.user_data embeds them in plaintext. user_data is readable by anyone with ec2:DescribeInstanceAttribute and from the instance via IMDS, and the plaintext also lands in state. The bootstrap script then writes them to /etc/cassandra/conf/cassandra.yaml with the default umask (typically 0644), so any local user on the node can read them. Only applies when a caller sets the passwords; with the default null nothing is rendered. Holden has no rule that follows sensitive variables into templatefile() inside user_data. Mitigated: user_data now chowns cassandra.yaml to cassandra and sets mode 600; plaintext in user_data/state remains when passwords are set.",
+      "file": "aws_instance.cassandra.tf",
+      "first_seen": "2026-11-10",
+      "fixable": false,
+      "id": "HOLDEN_AI_008",
+      "last_seen": "2026-11-10",
+      "line": 21,
+      "principle": "data-protection",
+      "related_resources": [
+        "template/cassandra.tmpl",
+        "var.keystore_password",
+        "var.truststore_password"
+      ],
+      "remediation": "Fetch the passwords at boot from SSM Parameter Store or Secrets Manager (pass only the parameter name through user_data, using the instance profile), and chmod 600 / chown cassandra the generated cassandra.yaml. At minimum add chmod 600 /etc/cassandra/conf/cassandra.yaml to the user_data script.",
+      "resource": "aws_instance.cassandra",
+      "severity": "LOW",
+      "status": "fixed",
+      "suppression_reason": null,
+      "title": "Keystore/truststore passwords are rendered into user_data and a world-readable cassandra.yaml",
+      "unresolved_since": null
     }
   ],
+  "scan_date": "2026-11-10T00:00:00Z",
+  "scan_path": ".",
+  "suggested_policies": [],
   "suggested_suppressions": []
 }

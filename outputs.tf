@@ -1,6 +1,7 @@
 output "instances" {
   description = "The Cassandra aws_instance resources, keyed by node private IP"
   value       = aws_instance.cassandra
+  sensitive   = true
 }
 output "security_group" {
   description = "The security group attached to the Cassandra nodes"

@@ -28,3 +28,32 @@ resource "aws_subnet" "cassandra" {
     Name = "terraform-aws-cassandra-examplea-${count.index}"
   }
 }
+
+resource "aws_network_acl" "cassandra" {
+  vpc_id = aws_vpc.main.id
+
+  ingress {
+    rule_no    = 100
+    protocol   = "-1"
+    action     = "allow"
+    cidr_block = aws_vpc.main.cidr_block
+    from_port  = 0
+    to_port    = 0
+  }
+
+  egress {
+    rule_no    = 100
+    protocol   = "-1"
+    action     = "allow"
+    cidr_block = aws_vpc.main.cidr_block
+    from_port  = 0
+    to_port    = 0
+  }
+}
+
+resource "aws_network_acl_association" "cassandra" {
+  for_each = { for idx, subnet in aws_subnet.cassandra : idx => subnet }
+
+  subnet_id      = each.value.id
+  network_acl_id = aws_network_acl.cassandra.id
+}

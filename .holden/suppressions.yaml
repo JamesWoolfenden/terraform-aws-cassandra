@@ -3,3 +3,11 @@ suppressions:
     resource_id: aws_security_group.cassandra
     reason: "Unrestricted egress is intentional -- Cassandra nodes need OS updates and cluster comms on dynamic ports; already documented inline via tfsec:ignore:AWS009"
     approved_by: james.woolfenden@gmail.com
+  - policy_id: HLD_AWS_309
+    resource_id: aws_subnet.cassandra
+    reason: "Subnets are associated with an explicit NACL (aws_network_acl_association.cassandra) via for_each over aws_subnet.cassandra; holden cannot follow that for_each expression to the subnet_id reference, so the check misfires"
+    approved_by: james.woolfenden@gmail.com
+  - policy_id: HLD_TF_029
+    resource_id: workspace
+    reason: "example/examplea deploys one VPC, subnets, an explicit NACL and the cassandra module as a single-purpose example workspace; 105 required IAM actions is only marginally over the 100 threshold and splitting an example would add no blast-radius benefit"
+    approved_by: james.woolfenden@gmail.com

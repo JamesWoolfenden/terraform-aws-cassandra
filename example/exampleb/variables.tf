@@ -24,8 +24,8 @@ variable "ami" {
   })
   description = "Contains information to select desired AMI"
   default = {
-    filter = ["amzn2-ami-hvm-*-x86_64-ebs"]
-    owners = ["amazon"]
+    filter = ["cassandra-BASE-v*"]
+    owners = ["self"]
   }
   validation {
     condition     = length(var.ami.filter) > 0 && length(var.ami.owners) > 0

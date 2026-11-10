@@ -144,12 +144,16 @@ No modules.
 | ---- | ----------- | ---- | ------- | :------: |
 | <a name="input_allowed_ranges"></a> [allowed\_ranges](#input\_allowed\_ranges) | Allowed ranges that can access the cluster | `list(any)` | `[]` | no |
 | <a name="input_ami"></a> [ami](#input\_ami) | Contains information to select desired AWS AMI: filter (name pattern list) and owners (account ID list) | <pre>object({<br/>    filter = list(string)<br/>    owners = list(string)<br/>  })</pre> | n/a | yes |
+| <a name="input_client_encryption_enabled"></a> [client\_encryption\_enabled](#input\_client\_encryption\_enabled) | Whether to enable client-to-node (CQL) TLS. The keystore must exist on the AMI when true. | `bool` | `false` | no |
 | <a name="input_disable_api_termination"></a> [disable\_api\_termination](#input\_disable\_api\_termination) | Whether to enable EC2 termination protection on each Cassandra node | `bool` | `true` | no |
 | <a name="input_iam_instance_profile"></a> [iam\_instance\_profile](#input\_iam\_instance\_profile) | Name of an IAM instance profile to attach to each Cassandra node; leave empty for none | `string` | `""` | no |
 | <a name="input_instance_type"></a> [instance\_type](#input\_instance\_type) | aws instance type and class | `string` | n/a | yes |
+| <a name="input_internode_encryption"></a> [internode\_encryption](#input\_internode\_encryption) | Cassandra server\_encryption\_options.internode\_encryption: none, all, dc or rack. The keystore/truststore must exist on the AMI when not none. | `string` | `"none"` | no |
+| <a name="input_keystore_password"></a> [keystore\_password](#input\_keystore\_password) | Password for the Cassandra keystore (and key). Must be set when internode\_encryption or client\_encryption\_enabled is turned on; there is deliberately no default. | `string` | `null` | no |
 | <a name="input_private_ips"></a> [private\_ips](#input\_private\_ips) | List of ips for the cassandra nodes | `list(any)` | n/a | yes |
 | <a name="input_ssh_inbound_range"></a> [ssh\_inbound\_range](#input\_ssh\_inbound\_range) | CIDRs of address that are allowed to ssh in. | `list(any)` | n/a | yes |
 | <a name="input_subnet_ids"></a> [subnet\_ids](#input\_subnet\_ids) | List of subnet Ids | `list(any)` | n/a | yes |
+| <a name="input_truststore_password"></a> [truststore\_password](#input\_truststore\_password) | Password for the Cassandra truststore. Must be set when internode\_encryption is not "none"; there is deliberately no default. | `string` | `null` | no |
 | <a name="input_volume_size"></a> [volume\_size](#input\_volume\_size) | Size in GB of the root EBS volume for each Cassandra node | `number` | `100` | no |
 | <a name="input_vpc_id"></a> [vpc\_id](#input\_vpc\_id) | The id for the vpc | `string` | n/a | yes |
 
@@ -241,6 +245,7 @@ resource "aws_iam_policy" "terraform_pike_plan" {
             "Effect": "Allow",
             "Action": [
                 "ec2:DescribeIamInstanceProfileAssociations",
+                "ec2:DescribeImages",
                 "ec2:DescribeSubnets"
             ],
             "Resource": [

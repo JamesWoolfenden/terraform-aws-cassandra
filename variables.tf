@@ -98,3 +98,49 @@ variable "volume_size" {
     error_message = "volume_size must be greater than 0."
   }
 }
+
+variable "keystore_password" {
+  description = "Password for the Cassandra keystore (and key). Must be set when internode_encryption or client_encryption_enabled is turned on; there is deliberately no default."
+  type        = string
+  default     = null
+  sensitive   = true
+  validation {
+    condition     = var.keystore_password == null || length(var.keystore_password) >= 8
+    error_message = "keystore_password must be at least 8 characters when set."
+  }
+}
+
+variable "truststore_password" {
+  description = "Password for the Cassandra truststore. Must be set when internode_encryption is not \"none\"; there is deliberately no default."
+  type        = string
+  default     = null
+  sensitive   = true
+  validation {
+    condition     = var.truststore_password == null || length(var.truststore_password) >= 8
+    error_message = "truststore_password must be at least 8 characters when set."
+  }
+}
+
+variable "internode_encryption" {
+  description = "Cassandra server_encryption_options.internode_encryption: none, all, dc or rack. The keystore/truststore must exist on the AMI when not none."
+  type        = string
+  default     = "none"
+  validation {
+    condition     = contains(["none", "all", "dc", "rack"], var.internode_encryption)
+    error_message = "internode_encryption must be one of none, all, dc or rack."
+  }
+  validation {
+    condition     = var.internode_encryption == "none" || (var.keystore_password != null && var.truststore_password != null)
+    error_message = "keystore_password and truststore_password must be set when internode_encryption is not \"none\"."
+  }
+}
+
+variable "client_encryption_enabled" {
+  description = "Whether to enable client-to-node (CQL) TLS. The keystore must exist on the AMI when true."
+  type        = bool
+  default     = false
+  validation {
+    condition     = !var.client_encryption_enabled || var.keystore_password != null
+    error_message = "keystore_password must be set when client_encryption_enabled is true."
+  }
+}

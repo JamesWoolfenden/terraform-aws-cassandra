@@ -18,16 +18,13 @@ resource "aws_instance" "cassandra" {
   subnet_id               = each.value.subnet_id
   disable_api_termination = var.disable_api_termination
 
-  lifecycle {
-    create_before_destroy = true
-  }
-
   user_data = <<HERE
 #!/bin/bash
 read -d '' CONTENT << EOF
-${templatefile("${path.module}/template/cassandra.tmpl", { private_ip = each.key, seeds = local.cassandra_seeds })}
+${templatefile("${path.module}/template/cassandra.tmpl", { private_ip = each.key, seeds = local.cassandra_seeds, internode_encryption = var.internode_encryption, client_encryption_enabled = var.client_encryption_enabled, keystore_password = var.keystore_password, truststore_password = var.truststore_password })}
 EOF
 sudo echo "$CONTENT" > /etc/cassandra/conf/cassandra.yaml
+chown cassandra:cassandra /etc/cassandra/conf/cassandra.yaml && chmod 600 /etc/cassandra/conf/cassandra.yaml
 
 yum update -y
 systemctl enable cassandra
